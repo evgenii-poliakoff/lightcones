@@ -5,7 +5,7 @@ then
   rm -r $CI_PREFIX_PATH
 fi
 
-mkdir -p $$CI_PATH_PREFIX
+mkdir -p $CI_PATH_PREFIX
 
 #./scripts/install_anaconda.sh
 #./scripts/install_intel_oneapi.sh
