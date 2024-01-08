@@ -1,6 +1,6 @@
 #! /bin/sh
 
-./scripts/version.sh
+. ./scripts/version.sh
 export CURRENT_DEVENV_VERSION=$DEVENV_VERSION
 echo "Committed version of requirements: $CURRENT_DEVENV_VERSION."
 
@@ -14,7 +14,7 @@ then
     echo "Version not found: Installing requirements."
    ./scripts/install_requirements.sh
 else
-    $CI_PATH_PREFIX/version.sh
+    . $CI_PATH_PREFIX/version.sh
     echo "Installed version of requirements: $DEVENV_VERSION."
     if ["$CURRENT_DEVENV_VERSION" != "$DEVENV_VERSION"] 
     then
