@@ -7,7 +7,7 @@ fi
 
 mkdir -p $CI_PATH_PREFIX
 
-#./scripts/install_anaconda.sh
+./scripts/install_anaconda.sh
 #./scripts/install_intel_oneapi.sh
 
 if [ $? -eq 0 ]
