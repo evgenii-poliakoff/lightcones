@@ -1,5 +1,7 @@
 #! /bin/sh
 
+set -x
+
 . ./scripts/version.sh
 export CURRENT_DEVENV_VERSION=$DEVENV_VERSION
 echo "Committed version of requirements: $CURRENT_DEVENV_VERSION."
