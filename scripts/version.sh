@@ -1,4 +1,4 @@
 #! /bin/sh
 
-DEVENV_VERSION="0.0.1"
+DEVENV_VERSION="0.0.2"
 export DEVENV_VERSION
