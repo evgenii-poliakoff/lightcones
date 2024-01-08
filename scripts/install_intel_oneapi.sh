@@ -1,7 +1,6 @@
 #!/bin/bash
 
-wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
-apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
-sh -c 'echo deb https://apt.repos.intel.com/oneapi all main > /etc/apt/sources.list.d/oneAPI.list'
-apt-get update
-apt-get install intel-oneapi-dpcpp-cpp-compiler
+wget https://registrationcenter-download.intel.com/akdlm/irc_nas/19079/l_BaseKit_p_2023.0.0.25537_offline.sh
+sh ./l_BaseKit_p_2023.0.0.25537_offline.sh -l install1.log -a --silent --eula accept
+wget https://registrationcenter-download.intel.com/akdlm/irc_nas/19084/l_HPCKit_p_2023.0.0.25400_offline.sh
+sh ./l_HPCKit_p_2023.0.0.25400_offline.sh -l install2.log -a --silent --eula accept
