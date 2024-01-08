@@ -1,0 +1,17 @@
+stages:
+  - build
+  - test
+
+build:
+  stage: build
+  script: 
+    - ./scripts/compile_fortran_modules.sh
+  tags:
+    - alba
+  
+test:
+  stage: test
+  script:
+    - echo "Running testing job."
+  tags:
+    - alba
