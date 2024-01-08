@@ -13,7 +13,8 @@ then
    ./scripts/install_requirements.sh
 else
     $CI_PATH_PREFIX/version.sh
-    if ["$CURRENT_DEVENV_VERSION" != "$DEVENV_VERSION"] then
+    if ["$CURRENT_DEVENV_VERSION" != "$DEVENV_VERSION"] 
+    then
         ./scripts/install_requirements.sh
     fi
 fi
