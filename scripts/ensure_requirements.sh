@@ -16,7 +16,7 @@ then
 else
     . $CI_PATH_PREFIX/version.sh
     echo "Installed version of requirements: $DEVENV_VERSION."
-    if ["$CURRENT_DEVENV_VERSION" != "$DEVENV_VERSION"] 
+    if [ "$CURRENT_DEVENV_VERSION" != "$DEVENV_VERSION" ] 
     then
         echo "Versions do not match: Installing requirements."
         ./scripts/install_requirements.sh
