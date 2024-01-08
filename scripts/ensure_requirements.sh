@@ -2,6 +2,7 @@
 
 ./scripts/version.sh
 export CURRENT_DEVENV_VERSION=$DEVENV_VERSION
+echo "Committed version of requirements: $CURRENT_DEVENV_VERSION."
 
 CI_PATH_PREFIX="$HOME/ci"
 export CI_PATH_PREFIX
@@ -14,6 +15,7 @@ then
    ./scripts/install_requirements.sh
 else
     $CI_PATH_PREFIX/version.sh
+    echo "Installed version of requirements: $DEVENV_VERSION."
     if ["$CURRENT_DEVENV_VERSION" != "$DEVENV_VERSION"] 
     then
         echo "Versions do not match: Installing requirements."
