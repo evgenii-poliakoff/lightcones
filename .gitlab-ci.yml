@@ -1,25 +1,28 @@
 stages:
-  #- setup
-  - build
-  - test
+  - setup
+#  - build
+#  - test
 
-#setup:
-#  stage: setup
-#  script:
-#    - ./scripts/install_intel_oneapi.sh
-#  tags:
-#    - alba
-
-build:
-  stage: build
-  script: 
-    - ./scripts/compile_fortran_modules.sh
-  tags:
-    - alba
-  
-test:
-  stage: test
+setup:
+  stage: setup
   script:
-    - echo "Running testing job."
+    - ./scripts/ensure_requirements.sh
   tags:
-    - alba
+    - ar
+    #- alba
+
+#build:
+#  stage: build
+#  script: 
+#    - ./scripts/compile_fortran_modules.sh
+#  tags:
+#    - ar
+    #- alba
+  
+#test:
+#  stage: test
+#  script:
+#    - echo "Running testing job."
+#  tags:
+#    - ar
+    #- alba
