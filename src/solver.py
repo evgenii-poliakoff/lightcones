@@ -15,6 +15,15 @@ import pathlib
 import scipy.sparse
 from numpy import linalg as LA
 
+class interval:
+    
+    def __init__(self, i0, i1, n_out, n_in, W, I_cd):
+        self.i0 = i0
+        self.i1 = i1
+        self.n_out = n_out
+        self.n_in = n_in
+        self.W = np.copy(W)
+        self.I_cd = np.copy(I_cd)
 class bath:
     
     def __init__(self):
@@ -27,6 +36,8 @@ class bath:
         self.t = None
         self.dt = None
         self.nt = None
+        
+        self.intervals1 = None
         
     def get_jump_times(self):
         
@@ -372,6 +383,7 @@ class bath:
         if visualize:
             U_cdia = np.copy(bth.U_min)
             bth.couplings_cdia = np.copy(bth.couplings_min)
+            bth.I_cdia = []
         
         intervals_out = []
 
@@ -386,10 +398,12 @@ class bath:
             n_coupled = n_in - n_out
 
             w = None
+            I_cdia = None
 
             n_out_new = n_out
 
             if n_coupled > max_n_coupled:
+
 
                 rho_cdi = rho_adv[n_out : n_in, n_out : n_in]
                 pi, U = tools.find_eigs_ascending(rho_cdi)
@@ -405,8 +419,14 @@ class bath:
                 n_out_new = n_in - max_n_coupled
 
                 w = U.T.conj()
+                I_cdia = pi
 
             intervals_out.append((begin, end, n_in, n_out, w))
+
+            if visualize:
+                bth.I_cdia.append(I_cdia)
+
+            #ii1 = interval(begin, end, n_out, n_in, W, I_cd)
 
             n_out = n_out_new
 
