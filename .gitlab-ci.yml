@@ -6,7 +6,7 @@ stages:
 setup:
   stage: setup
   script:
-    - ./scripts/ensure_requirements.sh
+    - ./scripts/install_requirements.sh
   tags:
     - ar
     #- alba
