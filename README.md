@@ -11,16 +11,10 @@ git clone https://gitlab.com/condmat/lightcones.git
 cd lightcones
 ```
 
-Install the Anaconda3 python:
+Install the requirements:
 
 ```
-./scripts/install_anaconda.sh
-```
-
-Install the Intel OneAPI HPC ToolKit:
-
-```
-./scripts/install_intel_oneapi.sh
+./scripts/install_requirements.sh
 ```
 
 Compile fortran modules:
