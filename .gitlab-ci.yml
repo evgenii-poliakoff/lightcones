@@ -1,7 +1,7 @@
 stages:
   - setup
-#  - build
-#  - test
+  - build
+  - test
 
 setup:
   stage: setup
@@ -11,18 +11,18 @@ setup:
     - ar
     #- alba
 
-#build:
-#  stage: build
-#  script: 
-#    - ./scripts/compile_fortran_modules.sh
-#  tags:
-#    - ar
+build:
+  stage: build
+  script: 
+    - ./scripts/compile_fortran_modules.sh
+  tags:
+    - ar
     #- alba
   
-#test:
-#  stage: test
-#  script:
-#    - echo "Running testing job."
-#  tags:
-#    - ar
+test:
+  stage: test
+  script:
+    - echo "Running testing job."
+  tags:
+    - ar
     #- alba
