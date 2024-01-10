@@ -6,6 +6,7 @@ stages:
 setup:
   stage: setup
   script:
+    - echo "Enter setup stage..."
     - ./scripts/install_requirements.sh
   tags:
     - ar
@@ -14,6 +15,7 @@ setup:
 build:
   stage: build
   script: 
+    - echo "Enter build state..."
     - ./scripts/compile_fortran_modules.sh
   tags:
     - ar
@@ -22,7 +24,7 @@ build:
 test:
   stage: test
   script:
-    - echo "Running testing job."
+    - echo "Enter test stage..."
     - pip install pytest
     - pytest ./tests
   tags:
