@@ -1,2 +1,2 @@
-from ..src import tools
+import src.tools as tools
 
