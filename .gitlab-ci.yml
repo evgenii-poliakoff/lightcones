@@ -17,6 +17,9 @@ build:
   script: 
     - echo "Enter build state..."
     - ./scripts/compile_fortran_modules.sh
+  artifacts:
+    paths:
+      - src/
   tags:
     - ar
     #- alba
