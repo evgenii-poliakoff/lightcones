@@ -30,6 +30,8 @@ test:
     - echo "Enter test stage..."
     - pip install pytest
     - pytest ./tests
+  dependencies:
+    - build
   tags:
     - ar
     #- alba
