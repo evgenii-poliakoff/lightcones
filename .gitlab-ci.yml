@@ -19,7 +19,12 @@ build:
     - ./scripts/compile_fortran_modules.sh
   artifacts:
     paths:
-      - src/
+       - src/fastmul.cpython-311-x86_64-linux-gnu.so
+       - src/evolution_chained2.cpython-311-x86_64-linux-gnu.so
+       - src/evolution_chained2_kicked.cpython-311-x86_64-linux-gnu.so
+       - src/evolution.cpython-311-x86_64-linux-gnu.so
+       - src/evolution2.cpython-311-x86_64-linux-gnu.so
+       - src/local_op.cpython-311-x86_64-linux-gnu.so
   tags:
     - ar
     #- alba
