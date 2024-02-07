@@ -1,1 +1,2 @@
-9
+dependencies/*
+src/*.so
