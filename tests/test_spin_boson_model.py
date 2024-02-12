@@ -1,6 +1,7 @@
 import os
 import sys
 import numpy as np
+import pathlib
 from .cases import spin_boson_model
 
 def test_s_z_av():
