@@ -1,3 +1,17 @@
+__all__ = [
+    'mv', 
+    'lancz',
+    'tridiag', 
+    'dyad', 
+    'as_column_vector', 
+    'make_hermitean', 
+    'find_largest_eigs', 
+    'find_smallest_eigs', 
+    'find_eigs_ascending', 
+    'find_eigs_descending', 
+    'kron'
+]
+
 import numpy as np
 from scipy.sparse import spdiags
 from scipy.linalg import eigh
@@ -62,17 +76,3 @@ def find_eigs_descending(m):
 
 def kron(a, b):
     return scipy.sparse.kron(a, b, format = 'csc')
-
-__all__ = [
-    'mv', 
-    'lancz',
-    'tridiag', 
-    'dyad', 
-    'as_column_vector', 
-    'make_hermitean', 
-    'find_largest_eigs', 
-    'find_smallest_eigs', 
-    'find_eigs_ascending', 
-    'find_eigs_descending', 
-    'kron'
-]
