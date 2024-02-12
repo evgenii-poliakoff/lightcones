@@ -1,4 +1,4 @@
-subroutine evolution_chained2_kicked(a, b, dt, begin_step, apply_H, o, psi_in, n_psi, psi, psi_mid, psi_mid_next, first_in_chain)
+subroutine solve(a, b, dt, begin_step, apply_H, eval_o, psi_in, n_psi, psi, psi_mid, psi_mid_next, eval_a)
 
     implicit none
     
@@ -19,7 +19,7 @@ subroutine evolution_chained2_kicked(a, b, dt, begin_step, apply_H, o, psi_in, n
     complex*16, intent(inout), dimension(n_psi) :: psi_mid_next
     !f2py intent(in,out,overwrite) psi_mid_next
     
-    integer, intent(in) :: first_in_chain
+    integer, intent(in) :: eval_a
     
     real*8 :: tol, err
     
@@ -27,9 +27,7 @@ subroutine evolution_chained2_kicked(a, b, dt, begin_step, apply_H, o, psi_in, n
 
     external begin_step
     external apply_H
-    external o
-
-    !integer :: o
+    external eval_o
     
     integer :: i
     
@@ -37,15 +35,9 @@ subroutine evolution_chained2_kicked(a, b, dt, begin_step, apply_H, o, psi_in, n
     
     psi = psi_in
     
-    !cont = o(a, psi, n_psi)
+    if (eval_a .eq. 1) then
     
-    !if (cont .ne. 0) then
-    !    return
-    !end if
-    
-    if (first_in_chain .eq. 1) then
-    
-        call o(a, psi, n_psi)
+        call eval_o(a, psi, n_psi)
         
     end if
     
@@ -73,15 +65,9 @@ subroutine evolution_chained2_kicked(a, b, dt, begin_step, apply_H, o, psi_in, n
         end do
     
         psi = 2 * psi_mid - psi
-        
-        !cont = o(i + 1, psi, n_psi)
-        
-        !if (cont .ne. 0) then
-        !    exit
-        !end if
-    
-        call o(i + 1, psi, n_psi)
+            
+        call eval_o(i + 1, psi, n_psi)
     
     end do
     
-end subroutine evolution_chained2_kicked
+end subroutine solve

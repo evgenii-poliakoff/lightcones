@@ -8,10 +8,8 @@ from scipy.sparse import coo_matrix
 from scipy.sparse import identity
 from scipy.sparse import diags
 
-
-
-class fock_space:
-    def __init__(self, num_modes, max_total_occupation, statistics, max_local_occupations = None):
+class space:
+    def __init__(self, statistics, num_modes, max_total_occupation, max_local_occupations = None):
 
         self.global_exc = max_total_occupation #internal parameter
         self.statistics = statistics #internal parameter
@@ -279,10 +277,7 @@ class fock_space:
             s = tuple(state)
             return(self.find_index[s])
     
-
-
-        
-class fock_space_kron:
+class space_kron:
     def __init__(self, f1, f2):
 
         self.f1 = f1
@@ -482,11 +477,3 @@ def real_time_solver(psi0, dt, tmax, H, Q = None, final_state = None):
     else:
         return(results)
     
-        
-
-
-# In[ ]:
-
-
-
-

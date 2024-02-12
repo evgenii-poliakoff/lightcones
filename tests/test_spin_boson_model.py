@@ -1,11 +1,11 @@
 import os
 import sys
+import numpy as np
+from .cases import spin_boson_model
 
-src_dir = os.path.abspath("./src")
-if src_dir not in sys.path:
-    sys.path.append(src_dir)
-
-import tools
-
-def test_addition():
-   assert 1 + 1 == 2
+def test_s_z_av():
+    s_z_av_table = spin_boson_model.compute_s_z_av()
+    with pathlib.Path("./cases/s_z_av_spin_boson.txt").open() as f:
+        s_z_av_ethalon =  np.loadtxt(f)
+    assert np.allclose(s_z_av_table, s_z_av_ethalon, rtol=1e-5, atol=1e-8), \
+        f"s_z average does not match the ethalon"

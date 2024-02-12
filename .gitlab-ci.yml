@@ -16,15 +16,10 @@ build:
   stage: build
   script: 
     - echo "Enter build state..."
-    - ./scripts/compile_fortran_modules.sh
+    - python3 setup.py develop
   artifacts:
     paths:
-       - src/fastmul.cpython-311-x86_64-linux-gnu.so
-       - src/evolution_chained2.cpython-311-x86_64-linux-gnu.so
-       - src/evolution_chained2_kicked.cpython-311-x86_64-linux-gnu.so
-       - src/evolution.cpython-311-x86_64-linux-gnu.so
-       - src/evolution2.cpython-311-x86_64-linux-gnu.so
-       - src/local_op.cpython-311-x86_64-linux-gnu.so
+      - '**/*.so'
   tags:
     - ar
     #- alba
