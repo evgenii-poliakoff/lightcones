@@ -2,9 +2,18 @@ import numpy as np
 from scipy.sparse import spdiags
 from scipy.linalg import eigh
 from ._fastmul import fastmul
+from . import _dlancz
 
 def mv(m, vin, vout, cin=1, cout=0):
     fastmul(m.data, m.indices, m.indptr, cin, vin, cout, vout)
+
+def lancz(w, J, n = None):
+    if n is None:
+        n = len(w)
+    a, b, ierr =  _dlancz.dlancz(n, w, J)
+    if ierr != 0:
+        raise RuntimeError("dlancz ierr not zero: " + str(ierr))   
+    return a, b
 
 def tridiag(e, h):
     data = [np.concatenate((h, np.array([0]))), np.array(e), np.concatenate((np.array([0]), h))]
@@ -56,6 +65,7 @@ def kron(a, b):
 
 __all__ = [
     'mv', 
+    'lancz',
     'tridiag', 
     'dyad', 
     'as_column_vector', 

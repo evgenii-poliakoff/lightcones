@@ -8,6 +8,12 @@ _fastmul = Extension(
     extra_f90_compile_args=['-fast']
 )
 
+_dlancz = Extension(
+    name='lightcones.linalg._dlancz',  
+    sources=['src/lightcones/linalg/dlancz.f'],
+    extra_f77_compile_args=['-fast']
+)
+
 _solve = Extension(
     name='lightcones.solvers.schrodinger._solve',  
     sources=['src/lightcones/solvers/schrodinger/solve.f90'],
@@ -19,7 +25,7 @@ config = {
     'name': 'lightcones',
     'version': '0.1',
     'description': 'Light cones package for real-time quantum impurity quenches',
-    'ext_modules': [_fastmul, _solve],
+    'ext_modules': [_fastmul, _dlancz, _solve],
     'packages': ['lightcones'],
     'package_dir': {'lightcones': 'lightcones'},
     'install_requires': [],
