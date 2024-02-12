@@ -1,7 +1,7 @@
 import numpy as np
 from lightcones import linalg as la
 
-def to_chain(w, J n = None):
+def to_chain(w, J, n = None):
     if n is None:
         n = len(w)
     alpha, beta = la.lancz(w, J)
