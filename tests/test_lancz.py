@@ -11,8 +11,8 @@ def test_chain2star():
     alpha, beta = la.lancz(w, J)
     
     # back to star form
-    e = a
-    h = np.sqrt(b)
+    e = alpha
+    h = np.sqrt(beta)
     coupling = h[0]
     H = la.tridiag(e, h[1:])
     H_dense = H.todense()
