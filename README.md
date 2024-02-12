@@ -17,10 +17,10 @@ Install the requirements:
 ./scripts/install_requirements.sh
 ```
 
-Compile fortran modules:
+Build the package:
 
 ```
-./scripts/compile_fortran_modules.sh
+python3 setup.py develop
 ```
 
 Then cd to the tutorials subfolder and explore the jupyter notebooks:
