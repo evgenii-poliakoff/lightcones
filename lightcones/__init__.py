@@ -1,16 +1,20 @@
 import numpy as np
 import lightcones.linalg as la
 from lightcones.solvers.schrodinger import solve
-
-# input:
-#    e    array of onsite energies e[0] ... e[n_sites - 1]
-#    h    array of hoppings h[0] ... h[n_sites - 2]
-#    nt   number of time steps during which to compute spread
-#    dt   size of one time step
-# output:
-#    alpha = spread(e, h, nt, dt)
-#         alpha[k, l] = \alpha(l*dt)_{k} where alpha is from the spread equation  
+ 
 def spread(e, h, nt, dt):
+    """
+    Calculate the spread of operator
+
+    Parameters:
+    - e (numpy.ndarray of numpy.float64): array of on-site energies e[0] ... e[n_sites - 1]
+    - h (numpy.ndarray of numpy.float64): array of hoppings h[0] ... h[n_sites - 2]
+    - nt (int): number of time steps during which to compute spread
+    - dt (float): size of one time step
+
+    Returns:
+    - numpy.ndarray of numpy.complex128: 2D array containing the spread of operator alpha[k, l] = \alpha(l*dt)_{k}
+    """
     n_sites = len(e)
     # first-quantized Hamiltonian
     H = la.tridiag(e, h)
@@ -31,3 +35,4 @@ def spread(e, h, nt, dt):
     solve(0, nt-1, dt, apply_h, phi_0, eval_o = eval_o)
     
     return phi_lc
+
