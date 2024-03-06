@@ -11,5 +11,15 @@ Here we introduce the two standard forms of the open quantum system model: the s
 
 # operator_spread.ipynb
 
-In the interacting picture (with respect to the free bath), the coupling operator will spread along the chain during the quench. The coefficients of the spread $\alpha_k\left(t\right)$ 
+In the interacting picture (with respect to the free bath), the coupling operator will spread along the chain during the quench. The coefficients of the spread $\alpha_k\left(t\right)$ play important role in our approach
+
+# wavepackets_decoupling.ipynb
+
+Here we demonstrate why the real-time local quench problem is a complicated many-body problem: there is no backward front. The emitted quanta decouple very slowly (the commutators decay in an algebraic way). We have long-range interaction in the time domain.
+
+# light_cone_interior_normal_modes.ipynb
+
+Here we discuss the retarded light cone density matrix, the light cone interior normal modes, and their asymptotic properties.
+
+
 
