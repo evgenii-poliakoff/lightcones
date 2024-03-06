@@ -9,3 +9,7 @@ computation of observable averages via solution of the non-stationary Schrodinge
 
 Here we introduce the two standard forms of the open quantum system model: the star and the chain representations, and how to switch between them
 
+# operator_spread.ipynb
+
+In the interacting picture (with respect to the free bath), the coupling operator will spread along the chain during the quench. The coefficients of the spread $\alpha_k\left(t\right)$ 
+
