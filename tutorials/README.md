@@ -1,4 +1,4 @@
-1. spin_boson_model.ipynb
+# spin_boson_model.ipynb
 
 In this notebook we consider the model of open quantum system, on the example of spin-boson model.
 We discuss how the initial value problem is posed for the nonstationary dynamics of local quantum quench.
