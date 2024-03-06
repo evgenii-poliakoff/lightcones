@@ -1,7 +1,7 @@
 import numpy as np
 import lightcones.linalg as la
 from lightcones.solvers.schrodinger import solve
- 
+
 def spread(e, h, nt, dt):
     """
     Calculate the spread of operator
@@ -36,3 +36,28 @@ def spread(e, h, nt, dt):
     
     return phi_lc
 
+def rho_plus(spread, dt):
+    """
+    Compute rho_plus given the spread of operator
+    
+    Parameters:
+    - spread (numpy.ndarray of numpy.complex128): 2D array of coefficients spread[k, l] = \alpha(l*dt)_{k}
+    
+    Returns:
+    - numpy.ndarray of numpy.complex128: 2D array containing matrix elements for the rho_plus for the duration of the spread
+    
+    """
+    
+    # get dimensions
+    n_sites, nt = spread.shape
+    
+    # here rho_plus will be stored
+    rho_lc = np.zeros((n_sites, n_sites), dtype = np.cdouble)
+    
+    for i in range(0, nt):
+        phi = la.as_column_vector(spread[:, i])
+        rho_lc += la.dyad(phi, phi) * dt
+
+    la.make_hermitean(rho_lc)
+
+    return rho_lc
