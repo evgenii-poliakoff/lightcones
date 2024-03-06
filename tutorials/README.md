@@ -25,7 +25,7 @@ Here we discuss the retarded light cone density matrix, the light cone interior 
 
 ## fidelity_relevant_subspace.ipynb
 
-Here we demonstrate the convergence properties of the fidelity of the full open system-bath wavefunction converges with respect to the number of kept light cone interior normal modes.
+Here we demonstrate the convergence properties of the fidelity of the full open system-bath wavefunction with respect to the number of kept light cone interior normal modes.
 
 ## arrival_times.ipynb
 
