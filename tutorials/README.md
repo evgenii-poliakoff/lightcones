@@ -1,3 +1,5 @@
+
+
 # spin_boson_model.ipynb
 
 In this notebook we consider the model of open quantum system, on the example of spin-boson model.
@@ -21,5 +23,15 @@ Here we demonstrate why the real-time local quench problem is a complicated many
 
 Here we discuss the retarded light cone density matrix, the light cone interior normal modes, and their asymptotic properties.
 
+# fidelity_relevant_subspace.ipynb
 
+Here we demonstrate the convergence properties of the fidelity of the full open system-bath wavefunction converges with respect to the number of kept light cone interior normal modes.
+
+# arrival_times.ipynb
+
+The concept of arrival times (inside the light cone interior) for degress of freedom is illustrated. A sequence of arrival times is defined for arbitrary frame. Different frames have different rates at which the modes arrive. In the star representations all the modes arrive (alomost) instantly at $t=0$. Whereas in the chain representations the modes arrive gradually (the light cone is well defined).
+
+# minimal_lighcone.ipynb
+
+There is a frame such that the rate at which the modes arrive is minimal. (Roughly speaking, a frame in which the Lieb-Robinson velocity is minimal). A numerical procedure to construct such a frame is presented.
 
