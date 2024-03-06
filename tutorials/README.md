@@ -15,7 +15,7 @@ In the interacting picture (with respect to the free bath), the coupling operato
 
 # wavepackets_decoupling.ipynb
 
-Here we demonstrate why the real-time local quench problem is a complicated many-body problem: there is no backward front. The emitted quanta decouple very slowly (the commutators decay in an algebraic way). We have long-range interaction in the time domain.
+Here we demonstrate why the real-time local quench problem is a complicated many-body problem: there is no backward front in the spatial picture. The emitted quanta decouple very slowly (the commutators decay in an algebraic way). We have long-range interaction in the time domain.
 
 # light_cone_interior_normal_modes.ipynb
 
