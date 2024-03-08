@@ -386,28 +386,36 @@ class space_kron:
         
             self.j = np.copy(f1.j)
             
-    def sigmax(self, i):
+    # sigma_x Pauli matrix
+    def sigma_x(self, i):
         if (i<self.f1.modes):
-             return(sparse.kron(self.f1.sigmax(i), self.f2.eye).tocsc())
+             return(sparse.kron(self.f1.sigma_x(i), self.f2.eye).tocsc())
         else:
-            return(sparse.kron(self.f1.eye, self.f2.sigmax(i-self.f1.modes)).tocsc())
+            return(sparse.kron(self.f1.eye, self.f2.sigma_x(i-self.f1.modes)).tocsc())
 
-        
-    def sigmay(self, i):
+    # sigma_y Pauli matrix
+    def sigma_y(self, i):
        
         if (i<self.f1.modes):
-             return(sparse.kron(self.f1.sigmay(i), self.f2.eye).tocsc())
+             return(sparse.kron(self.f1.sigma_y(i), self.f2.eye).tocsc())
         else:
-            return(sparse.kron(self.f1.eye, self.f2.sigmay(i-self.f1.modes)).tocsc())
+            return(sparse.kron(self.f1.eye, self.f2.sigma_y(i-self.f1.modes)).tocsc())
 
-        
-    def sigmaz(self, i):
+    # sigma_z Pauli matrix    
+    def sigma_z(self, i):
         
         if (i<self.f1.modes):
-             return(sparse.kron(self.f1.sigmaz(i), self.f2.eye).tocsc())
+             return(sparse.kron(self.f1.sigma_z(i), self.f2.eye).tocsc())
         else:
-            return(sparse.kron(self.f1.eye, self.f2.sigmaz(i-self.f1.modes)).tocsc())
+            return(sparse.kron(self.f1.eye, self.f2.sigma_z(i-self.f1.modes)).tocsc())
     
+    # raising Pauli matrix
+    def sigma_p(self, i):
+        return self.create[i]
+    
+    # lowering Pauli matrix
+    def sigma_m(self, i):
+        return self.annihilate[i]
     
     def occupations(self,i):
         
