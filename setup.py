@@ -20,12 +20,18 @@ _solve = Extension(
     extra_f90_compile_args=['-fast']
 )
 
+_outer = Extension(
+    name='lightcones._outer',  
+    sources=['src/lightcones/outer.f90'],
+    extra_f90_compile_args=['-fast']
+)
+
 # Set up the configuration
 config = {
     'name': 'lightcones',
     'version': '0.1',
     'description': 'Light cones package for real-time quantum impurity quenches',
-    'ext_modules': [_fastmul, _dlancz, _solve],
+    'ext_modules': [_fastmul, _dlancz, _solve, _outer],
     'packages': ['lightcones'],
     'package_dir': {'lightcones': 'lightcones'},
     'install_requires': [],
