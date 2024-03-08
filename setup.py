@@ -8,8 +8,10 @@ import warnings
 config = ConfigParser()
 # read the setup.cfg file
 config.read('setup.cfg')
-# access the fcompiler_options value from the [build_ext] section
-fcompiler_options = config.get('user_options', 'fcompiler_options')
+# access the fcompiler value from the [build_ext] section
+fcompiler = config.get('build_ext', 'fcompiler')
+# access the [$fcompiler]_options value from the [build_ext] section
+fcompiler_options = config.get('user_options', fcompiler + '_options')
 fcompiler_options = fcompiler_options.split()
 
 # Define the Fortran extensions
