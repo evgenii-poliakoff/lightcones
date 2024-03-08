@@ -234,6 +234,64 @@ class space:
             
         else:
             print('Сhoose the statistics: Bose or Fermi')
+            
+        # initialize the local outer projections
+        
+        n_max = max_total_occupation    
+        self.local_observables = self.local_projections_f(self, num_modes, n_max, None)
+        
+    def outer(self, ket, bra, mode): 
+        return self.local_observables[mode][ket][bra]
+    
+    def local_projections_f(self, f, m_max, n_max, id_s):
+        
+        import secondquant
+        import local_op
+        from scipy.sparse import csc_matrix
+        
+        self.K = f.dimension
+        self.local_dim = n_max + 1
+        
+        a = f.annihilate
+        a_dag = f.create
+        
+        local_ops = []
+        
+        o_data = np.zeros(self.K, dtype = complex)
+        o_ind = np.zeros(self.K, dtype = np.int32)
+        
+        o_ptr = np.zeros(self.K + 1, dtype = np.int32)
+        for i in range(self.K + 1):
+            o_ptr[i] = i
+        
+        for i in range(0, m_max):
+            
+            o = np.array([f.occupations(j)[i] for j in range(self.K)])
+            
+            a_ = a[i]
+            b_ = a_dag[i]
+            
+            mode_op = [[] for l in range(self.local_dim)]
+            
+            for p in range(self.local_dim):
+                for q in range(self.local_dim):
+                    
+                    outer(a_.data, a_.indices, a_.indptr, \
+                        b_.data, b_.indices, b_.indptr, \
+                            o_data, o_ind, o, p, q)
+
+                    op = csc_matrix((np.copy(o_data), np.copy(o_ind), np.copy(o_ptr)), shape = (self.K, self.K))
+
+                    if not id_s is None:
+                        op = kron(id_s, op)
+                    mode_op[p].append(op)
+                    
+            local_ops.append(mode_op)
+            
+        if not id_s is None:
+            self.K = self.K * id_s.shape[0]
+        
+        return local_ops
 
     # sigma_x Pauli matrix
     def sigma_x(self, i):
@@ -275,7 +333,6 @@ class space:
                 n -= current_state[j+1] - 1
                 current_state = current_state[:j] + (current_state[j]+1, 0) + current_state[j+2:]
       
-        
     def occupations(self,i):
      
         if i >= self.dimension :
@@ -284,7 +341,6 @@ class space:
         else:
             return(np.array(self.states_list[i]))
     
-    
     def index(self, state):
        
         if len(state) != self.modes:
@@ -292,6 +348,8 @@ class space:
         else:
             s = tuple(state)
             return(self.find_index[s])
+    
+    
     
 class space_kron:
     def __init__(self, f1, f2):
