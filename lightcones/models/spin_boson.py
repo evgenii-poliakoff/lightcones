@@ -12,7 +12,7 @@ class spin_boson:
         b_hat_dag = hs_joint.create
         sigma_m = b_hat[0]
         sigma_p = b_hat_dag[0]
-        sigma = [hs_joint.sigmax(0), hs_joint.sigmay(0), hs_joint.sigmaz(0)]
+        sigma = [hs_joint.sigma_x(0), hs_joint.sigma_y(0), hs_joint.sigma_z(0)]
         a_hat = b_hat[1:]
         a_hat_dag = b_hat_dag[1:]
     

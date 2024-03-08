@@ -7,10 +7,17 @@ from scipy import sparse
 from scipy.sparse import coo_matrix
 from scipy.sparse import identity
 from scipy.sparse import diags
+import warnings
 
 class space:
-    def __init__(self, statistics, num_modes, max_total_occupation, max_local_occupations = None):
-
+    def __init__(self, statistics, num_modes, max_total_occupation = None, max_local_occupations = None):
+    
+        if max_total_occupation is None and max_local_occupations is None:
+            raise Exception('Either max_total_occupation or max_local_occupations should be specified') 
+            
+        if max_total_occupation is None:
+            max_total_occupation = sum(max_local_occupations)
+            
         self.global_exc = max_total_occupation #internal parameter
         self.statistics = statistics #internal parameter
             
@@ -226,22 +233,30 @@ class space:
             
         else:
             print('Сhoose the statistics: Bose or Fermi')
-                  
-                
-    def sigmax(self, i):
+
+    # sigma_x Pauli matrix
+    def sigma_x(self, i):
 
         return(self.annihilate[i] + self.create[i])
     
-    
-    def sigmay(self, i):
+    # sigma_y Pauli matrix
+    def sigma_y(self, i):
  
         return(-1j*(-self.annihilate[i] + self.create[i]))
     
-    
-    def sigmaz(self, i):
+    # sigma_z Pauli matrix
+    def sigma_z(self, i):
 
         return(- self.annihilate[i]@self.create[i] + self.create[i]@self.annihilate[i])
-  
+    
+    
+    # raising Pauli matrix
+    def sigma_p(self, i):
+        return self.create[i]
+    
+    # lowering Pauli matrix
+    def sigma_m(self, i):
+        return self.annihilate[i]
         
     def states_generator(self):
         #Generates all the possible states for given Fock space
