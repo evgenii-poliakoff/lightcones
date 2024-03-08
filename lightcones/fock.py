@@ -8,6 +8,7 @@ from scipy.sparse import coo_matrix
 from scipy.sparse import identity
 from scipy.sparse import diags
 import warnings
+from ._outer import outer
 
 class space:
     def __init__(self, statistics, num_modes, max_total_occupation = None, max_local_occupations = None):
