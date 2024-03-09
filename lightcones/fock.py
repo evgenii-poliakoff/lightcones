@@ -4,6 +4,7 @@
 import numpy as np
 from numpy import linalg as LA
 from scipy import sparse
+from scipy.sparse import csc_matrix
 from scipy.sparse import coo_matrix
 from scipy.sparse import identity
 from scipy.sparse import diags
@@ -245,8 +246,6 @@ class space:
     
     def local_projections_f(self, f, m_max, n_max, id_s):
         
-        import secondquant
-        import local_op
         from scipy.sparse import csc_matrix
         
         self.K = f.dimension
