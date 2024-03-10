@@ -122,6 +122,9 @@ def mul_sparse_vector(a, b):
     mv(a, b, vout)
     return vout
 
+def mul_sparse_sparse(a, b):
+    return a @ b
+
 def mul_list_list_vector(a, b):
     n = len(a)
     m = len(a[0])
@@ -133,12 +136,36 @@ def mul_list_list_vector(a, b):
         o.append(row)
     return o
 
+def mul_listlist_listlist(a, b):
+    n1 = len(a)
+    m1 = len(a[0])
+    n2 = len(b)
+    m2 = len(b[0])
+    
+    ml = []
+    for i in range(n1*n2):
+        ml.append([])
+    
+    for i1 in range(n1):
+        for j1 in range(m1):
+            for i2 in range(n2):
+                for j2 in range(m2):
+                    ml[i1 * n2 + i2].append(mul(a[i1][j1], b[i2][j2]))
+    
+    return ml
+
 def mul(a, b):
     if is_sparse_matrix(a) and is_vector(b):
         return mul_sparse_vector(a, b)
     
+    if is_sparse_matrix(a) and is_sparse_matrix(b):
+        return mul_sparse_sparse(a, b)
+    
     if is_list_list_of_any(a) and is_vector(b):
         return mul_list_list_vector(a, b)
+    
+    if is_list_list_of_any(a) and is_list_list_of_any(b):
+        return mul_listlist_listlist(a, b)
             
     raise Exception('Unsupported type of a for mul')
 
