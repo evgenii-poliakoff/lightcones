@@ -348,7 +348,10 @@ class space:
             s = tuple(state)
             return(self.find_index[s])
     
-    
+    def vacuum_state(self):
+        psi = np.zeros(self.dimension, dtype = complex)
+        psi[0] = 1.0
+        return psi
     
 class space_kron:
     def __init__(self, f1, f2):
