@@ -1,7 +1,7 @@
 import numpy as np
 import lightcones.linalg as la
 from lightcones import fock
-import lightcones.linalg.kron as k
+from lightcones.linalg import kron as k
 
 def test_kron():
     max_quanta = 5
