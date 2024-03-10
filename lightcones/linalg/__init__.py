@@ -16,7 +16,6 @@ import numpy as np
 import scipy.sparse
 from scipy.sparse import spdiags
 from scipy.linalg import eigh
-from overloading import overload
 from typing import List
 from typing import Any
 from ._fastmul import fastmul
@@ -78,11 +77,16 @@ def find_eigs_descending(m):
     v = np.flip(v, axis = 1)
     return (e, v)
 
-def kron(a, b):
+def is_list_list_of_any(a):
+    return all(isinstance(sublist, list) for sublist in a)
+
+def is_sparse_matrix(a):
+    return isinstance(a, scipy.sparse.coo_matrix)
+
+def kron_sparse_sparse(a, b):
     return scipy.sparse.kron(a, b, format = 'csc')
 
-@overload
-def kron(a : List[List[Any]], b : List[List[Any]]) -> List[List[Any]]:
+def kron_list_list(a, b): 
     n1 = len(a)
     m1 = len(a[0])
     n2 = len(b)
@@ -99,3 +103,12 @@ def kron(a : List[List[Any]], b : List[List[Any]]) -> List[List[Any]]:
                     kr[i1 * n2 + i2].append(kron(a[i1][j1], b[i2][j2]))
     
     return kr
+
+def kron(a, b):
+    if is_sparse_matrix(a) and is_sparse_matrix(b):
+        return kron_sparse_sparse(a, b)
+    
+    if is_list_list_of_any(a) and is_list_list_of_any(b):
+        return kron_list_list(a, b)
+    
+    raise Exception('Unsupported types for kron')
