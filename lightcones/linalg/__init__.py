@@ -15,6 +15,7 @@ __all__ = [
 import numpy as np
 from scipy.sparse import spdiags
 from scipy.linalg import eigh
+from multipledispatch import dispatch
 from ._fastmul import fastmul
 from . import _dlancz
 
@@ -74,5 +75,25 @@ def find_eigs_descending(m):
     v = np.flip(v, axis = 1)
     return (e, v)
 
+@dispatch(scipy.sparse.csc_matrix, scipy.sparse.csc_matrix)
 def kron(a, b):
     return scipy.sparse.kron(a, b, format = 'csc')
+
+@dispatch(List[List[Any]], List[List[Any]])
+def kron(a, b):
+    n1 = len(a)
+    m1 = len(a[0])
+    n2 = len(b)
+    m2 = len(b[0])
+    
+    kr = []
+    for i in range(n1*n2):
+        kr.append([])
+    
+    for i1 in range(n1):
+        for j1 in range(m1):
+            for i2 in range(n2):
+                for j2 in range(m2):
+                    kr[i1 * n2 + i2].append(kron(a[i1][j1], b[i2][j2]))
+    
+    return kr
