@@ -1,5 +1,6 @@
 import numpy as np
 from lightcones.linalg import mul
+from lightcones import fock
 
 def test_mul():
     max_quanta = 5
