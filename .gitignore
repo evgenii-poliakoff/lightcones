@@ -4,7 +4,10 @@ __pycache__
 tutorials/.ipynb_checkpoints/*
 tutorials/**/*.txt
 tutorials/**/*.eps
+!tutorials/pictures/*.eps
 tutorials/**/*.jpg
+!tutorials/pictures/*.jpg
 tutorials/**/*.gif
+!tutorials/pictures/*.gif
 dependencies/*
 build/*
