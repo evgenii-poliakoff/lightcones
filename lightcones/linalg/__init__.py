@@ -16,7 +16,7 @@ import numpy as np
 import scipy.sparse
 from scipy.sparse import spdiags
 from scipy.linalg import eigh
-from multipledispatch import dispatch
+from overloading import overload
 from typing import List
 from typing import Any
 from ._fastmul import fastmul
@@ -78,12 +78,11 @@ def find_eigs_descending(m):
     v = np.flip(v, axis = 1)
     return (e, v)
 
-@dispatch(scipy.sparse.csc_matrix, scipy.sparse.csc_matrix)
 def kron(a, b):
     return scipy.sparse.kron(a, b, format = 'csc')
 
-@dispatch(List[List[Any]], List[List[Any]])
-def kron(a, b):
+@overload
+def kron(a : List[List[Any]], b : List[List[Any]]) -> List[List[Any]]:
     n1 = len(a)
     m1 = len(a[0])
     n2 = len(b)
