@@ -83,6 +83,9 @@ def is_list_list_of_any(a):
 def is_sparse_matrix(a):
     return isinstance(a, scipy.sparse.csc_matrix)
 
+def is_vector(a):
+    return isinstance(a, np.ndarray) and len(a.shape) == 1
+
 def kron_sparse_sparse(a, b):
     return scipy.sparse.kron(a, b, format = 'csc')
 
@@ -112,3 +115,52 @@ def kron(a, b):
         return kron_list_list(a, b)
     
     raise Exception('Unsupported types for kron')
+
+
+def mul_sparse_vector(a, b):
+    vout = np.zeros(len(b), dtype = complex)
+    mv(a, b, vout)
+    return vout
+
+def mul_list_list_vector(a, b):
+    n = len(a)
+    m = len(a[0])
+    o = []
+    for i in range(n):
+        row = []
+        for j in range(m):
+            row.append(mul(a[i][j], b))
+        o.append(row)
+    return o
+
+def mul(a, b):
+    if is_sparse_matrix(a):
+        return mul_sparse_vector(a, b)
+    
+    if is_list_list_of_any(a):
+        return mul_list_list_vector(a, b)
+            
+    raise Exception('Unsupported type of a for mul')
+
+def dot_vector_vector(a, b):
+    return np.vdot(a, b)
+
+def dot_vector_list_list(a, b):
+    n = len(b)
+    m = len(b[0])
+    o = []
+    for i in range(n):
+        row = []
+        for j in range(m):
+            row.append(dot(a, b[i][j]))
+        o.append(row)
+    return o
+
+def dot(a, b):
+    if is_vector(a) and is_sparse_matrix(b):
+        return mul_sparse_vector(a, b)
+    
+    if is_list_list_of_any(b):
+        return dot_vector_list_list(a, b)
+            
+    raise Exception('Unsupported type of a for dot')
