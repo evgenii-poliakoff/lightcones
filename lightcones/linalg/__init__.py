@@ -134,10 +134,10 @@ def mul_list_list_vector(a, b):
     return o
 
 def mul(a, b):
-    if is_sparse_matrix(a):
+    if is_sparse_matrix(a) and is_vector(b):
         return mul_sparse_vector(a, b)
     
-    if is_list_list_of_any(a):
+    if is_list_list_of_any(a) and is_vector(b):
         return mul_list_list_vector(a, b)
             
     raise Exception('Unsupported type of a for mul')
@@ -157,10 +157,10 @@ def dot_vector_list_list(a, b):
     return o
 
 def dot(a, b):
-    if is_vector(a) and is_sparse_matrix(b):
-        return mul_sparse_vector(a, b)
+    if is_vector(a) and is_vector(b):
+        return dot_vector_vector(a, b)
     
-    if is_list_list_of_any(b):
+    if is_vector(a) and is_list_list_of_any(b):
         return dot_vector_list_list(a, b)
             
     raise Exception('Unsupported type of a for dot')
