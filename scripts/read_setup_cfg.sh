@@ -25,3 +25,6 @@ KEY="install_anaconda"
 install_anaconda=$(sed -n "/^\[${SECTION}\]/,/^\[/ {/^${KEY}=/p}" $CONFIG_FILE | awk -F'=' '{print $2}')
 
 export INSTALL_ANACONDA="$install_anaconda"
+
+# Print the value to confirm it was successfully read
+echo "Detected install_anacond value: $INSTALL_ANACONDA"
