@@ -9,7 +9,7 @@ def test_mul():
     a = space.outer(0, 0, 0)
     b = space.vacuum_state()
     c = mul(a, b)
-    assert np.close(c, b, rtol=1e-5, atol=1e-8), \
+    assert np.allclose(c, b, rtol=1e-5, atol=1e-8), \
         f"c not match the ethalon"
     
 def test_mul_2():
