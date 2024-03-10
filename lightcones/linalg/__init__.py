@@ -81,7 +81,7 @@ def is_list_list_of_any(a):
     return all(isinstance(sublist, list) for sublist in a)
 
 def is_sparse_matrix(a):
-    return isinstance(a, scipy.sparse.coo_matrix)
+    return isinstance(a, scipy.sparse.csc_matrix)
 
 def kron_sparse_sparse(a, b):
     return scipy.sparse.kron(a, b, format = 'csc')
