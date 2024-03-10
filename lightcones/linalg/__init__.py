@@ -18,6 +18,7 @@ from scipy.sparse import spdiags
 from scipy.linalg import eigh
 from multipledispatch import dispatch
 from typing import List
+from typing import Any
 from ._fastmul import fastmul
 from . import _dlancz
 
