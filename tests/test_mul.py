@@ -38,10 +38,10 @@ def test_mul_3():
     pr2 = [[space.outer(0, 0, 1), space.outer(0, 1, 1)],
            [space.outer(1, 0, 1), space.outer(1, 1, 1)]]
     pr = la.mul(pr1, pr2)
-    pr_expected = [[m(pr1[0][0], pr2[0][0]), m(pr1[0][0], pr2[0][1]), m(pr1[0][1], pr2[0][0]), m(pr1[0][1], pr2[0][1])],
-                   [m(pr1[0][0], pr2[1][0]), m(pr1[0][0], pr2[1][1]), m(pr1[0][1], pr2[1][0]), m(pr1[0][1], pr2[1][1])],
-                   [m(pr1[1][0], pr2[0][0]), m(pr1[1][0], pr2[0][1]), m(pr1[1][1], pr2[0][0]), m(pr1[1][1], pr2[0][1])],
-                   [m(pr1[1][0], pr2[1][0]), m(pr1[1][0], pr2[1][1]), m(pr1[1][1], pr2[1][0]), m(pr1[1][1], pr2[1][1])]]
+    pr_expected = [[pr1[0][0] @ pr2[0][0], pr1[0][0] @ pr2[0][1], pr1[0][1] @ pr2[0][0], pr1[0][1] @ pr2[0][1]],
+                   [pr1[0][0] @ pr2[1][0], pr1[0][0] @ pr2[1][1], pr1[0][1] @ pr2[1][0], pr1[0][1] @ pr2[1][1]],
+                   [pr1[1][0] @ pr2[0][0], pr1[1][0] @ pr2[0][1], pr1[1][1] @ pr2[0][0], pr1[1][1] @ pr2[0][1]],
+                   [pr1[1][0] @ pr2[1][0], pr1[1][0] @ pr2[1][1], pr1[1][1] @ pr2[1][0], pr1[1][1] @ pr2[1][1]]]
     for i in range(4):
         for j in range(4):
             assert np.allclose(pr[i][j].toarray(), pr_expected[i][j].toarray(), rtol=1e-5, atol=1e-8), \
