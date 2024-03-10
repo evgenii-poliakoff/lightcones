@@ -13,6 +13,7 @@ __all__ = [
 ]
 
 import numpy as np
+import scipy.sparse
 from scipy.sparse import spdiags
 from scipy.linalg import eigh
 from multipledispatch import dispatch
