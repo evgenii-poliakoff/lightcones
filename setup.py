@@ -47,7 +47,7 @@ config = {
     'ext_modules': [_fastmul, _dlancz, _solve, _outer],
     'packages': ['lightcones'],
     'package_dir': {'lightcones': 'lightcones'},
-    'install_requires': ['overloading>=0.5.0'],
+    'install_requires': [],
     'zip_safe': False,
 }
 
