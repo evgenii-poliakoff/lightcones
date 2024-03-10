@@ -51,8 +51,8 @@ def test_outer_boson_3():
     local_bounds = [1, 1, max_quanta, max_quanta]
     space = fock.space(statistics = 'Bose', num_modes = 4, max_local_occupations = local_bounds)
     psi = np.zeros(space.dimension, dtype = complex)
-    a = np.sin(pi/5)
-    b = np.cos(pi/5)
+    a = np.sin(math.pi/5)
+    b = np.cos(math.pi/5)
     occupations = [0, 1, 5, 5]
     psi[space.index(occupations)] = np.sqrt(1.0/2) * a
     occupations = [0, 1, 3, 5]
@@ -119,8 +119,8 @@ def test_outer_fermion_3():
     max_quanta = 5
     space = fock.space(statistics = 'Fermi', num_modes = 4, max_total_occupation = max_quanta)
     psi = np.zeros(space.dimension, dtype = complex)
-    a = np.sin(pi/5)
-    b = np.cos(pi/5)
+    a = np.sin(math.pi/5)
+    b = np.cos(math.pi/5)
     occupations = [0, 1, 1, 1]
     psi[space.index(occupations)] = np.sqrt(1.0/2) * a
     occupations = [0, 1, 1, 0]
