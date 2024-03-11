@@ -241,8 +241,24 @@ class space:
         n_max = max_total_occupation    
         self.local_observables = self.local_projections_f(self, num_modes, n_max, None)
         
-    def outer(self, ket, bra, mode): 
+    def outer_index(self, ket, bra, mode): 
         return self.local_observables[mode][ket][bra]
+    
+    def outer_list(self, ket, bra, mode):
+        o = self.emptyH
+        
+        for i in range(len(ket)):
+            for j in range(len(bra)):
+                o = o + ket[i] * (bra[j] + 1j * 0).conjugate() * self.outer_index(i, j, mode)
+                
+        return o
+    
+    def outer(self, ket, bra, mode):
+        
+        if isinstance(ket, list) and isinstance(bra, list):
+            return self.outer_list(ket, bra, mode)
+        
+        return self.outer_index(ket, bra, mode)
     
     def local_projections_f(self, f, m_max, n_max, id_s):
         
