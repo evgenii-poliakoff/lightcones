@@ -7,7 +7,7 @@ This repository holds the python packages for the generalized light cone approac
 Clone the repository:
 
 ```
-git clone https://gitlab.com/condmat/lightcones.git
+git clone https://github.com/evgenii-poliakoff/lightcones.git
 cd lightcones
 ```
 
