@@ -382,7 +382,7 @@ class space_kron:
         self.dimension  = f1.dimension * f2.dimension
 
         #3)
-        self.emptyH = coo_matrix((self.dimension , self.dimension ), dtype = complex).tocsc()
+        self.zero_op= coo_matrix((self.dimension , self.dimension ), dtype = complex).tocsc()
 
         #4)
         self.eye = sparse.eye(self.dimension).tocsc()

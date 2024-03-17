@@ -24,4 +24,6 @@ class fermion_2_fermion_leads:
         
         self.space = joint
         self.dimension = joint.dimension
+        
+        self.zero_op = joint.zero_op
             

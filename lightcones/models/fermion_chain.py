@@ -9,7 +9,7 @@ class fermion_chain:
         self.space = space
         
         self.dimension = space.dimension
-        self.zero_op = space.emptyH
+        self.zero_op = space.zero_op
         self.eye = space.eye
         
         self.length = length

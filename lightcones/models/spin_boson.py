@@ -36,4 +36,4 @@ class spin_boson:
         
         self.dimension = hs_joint.dimension
 
-        self.zero_op = hs_joint.emptyH
+        self.zero_op = hs_joint.zero_op
