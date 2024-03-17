@@ -42,10 +42,10 @@ def rho_plus(spread, dt):
     
     Parameters:
     - spread (numpy.ndarray of numpy.complex128): 2D array of coefficients spread[k, l] = \alpha(l*dt)_{k}
+    - dt (float): size of one time step
     
     Returns:
     - numpy.ndarray of numpy.complex128: 2D array containing matrix elements for the rho_plus for the duration of the spread
-    
     """
     
     # get dimensions
@@ -61,3 +61,65 @@ def rho_plus(spread, dt):
     la.make_hermitean(rho_lc)
 
     return rho_lc
+
+def minimal_forward_frame(spread, rho_plus, dt, rtol):
+    """
+    Compute the frame of a minimal light cone
+
+    Parameters:
+    - spread (numpy.ndarray of numpy.complex128): 2D array of coefficients spread[k, l] = \alpha(l*dt)_{k}
+    - rho_plus (numpy.ndarray of numpy.complex128): 2D array containing matrix elements for the rho_plus for the duration of the spread
+    - dt (float): size of one time step
+    - rtol (float): relative cutoff treshold for the light cone boundary
+    
+    Returns:
+    - numpy.ndarray of numpy.complex128: Unitary matrix U_min
+    """
+    
+    # find the modes which manage to couple before the end of the
+    # time interval
+    pi, U_rel = la.find_largest_eigs(rho_plus)
+    g_metric = pi - rtol * pi[0]
+    inside_lightcone = g_metric > 0
+    n_rel =  sum(inside_lightcone)
+    
+    # begin to construct the rotation U_min
+    U_min = U_rel
+    # also recompute the spread
+    spread_min = U_min.T.conj() @ spread
+    # and rho_plus 
+    rho_plus_min = np.diag(pi[: n_rel].astype('cdouble'))
+
+    # number of time steps
+    ntg = np.size(spread, 1)
+
+    # Here we store the arrival times
+    times_in = []
+    
+    # Number of non-optimal modes
+    # (which we continue to transform)
+    n = n_rel
+        
+    # Propagate backwards in time
+    for i in reversed(range(0, ntg)):
+        pi_min, _ = la.find_smallest_eigs(rho_plus_min, 1)
+        pi_max, _ = la.find_largest_eigs(rho_plus_min, 1)
+        g_metric = pi_min - rtol * pi_max
+        outside_lightcone = g_metric < 0
+
+        if outside_lightcone:
+            pi, U = la.find_eigs_descending(rho_plus_min)
+            spread_min[: n, :] = U.T.conj() @ spread_min[: n, :]
+            U_min[: n, :] = U.T.conj() @ U_min[: n, :]
+            rho_plus_min = np.diag(pi[: -1].astype('cdouble'))
+            times_in.insert(0, i + 1)
+            n = n_rel - len(times_in)
+
+        psi = la.as_column_vector(spread_min[: n, i])
+        rho_plus_min -= la.dyad(psi, psi) * dt
+        la.make_hermitean(rho_plus_min)
+        
+    times_in.append(ntg)
+    
+    return times_in, U_min, spread_min
+    
