@@ -69,7 +69,7 @@ class space:
         self.dimension  = len(self.states_list)
         
         #6)
-        self.emptyH = coo_matrix((self.dimension , self.dimension ), dtype = complex).tocsc()
+        self.zero_op = coo_matrix((self.dimension , self.dimension ), dtype = complex).tocsc()
         
         #7)
         self.eye = sparse.eye(self.dimension ).tocsc()
