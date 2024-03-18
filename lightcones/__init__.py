@@ -137,8 +137,47 @@ def m_in(times_in, ti):
 
 def causal_diamond_frame(spread_min, times_in, U_min, rho_plus, dt, rtol, m):
     
+    # spread in the causal diamond frame
+    spread_cd = np.copy(spread_min)
+    
     # skip first m arrival times
     U_cdia = [None]**m
+    
+    # rho_minus initial value:
+    # skip first m arrival times
+    rho_minus = np.copy(rho_plus)
+    for ti in range(0, times_in[m]):
+        psi = la.as_column_vector(spread_cd[:, ti])
+        rho_minus -= la.dyad(psi, psi) * dt
+    
+    # produce U_cdia
+    for i in range(m, len(times_in) - 1):
+        
+        n_out = i - m
+        n_in = i
+        
+        rho_cd = rho_minus[n_out : n_in, n_out : n_in]
+        pi, U = tools.find_eigs_ascending(rho_cd)
+        
+        # switch spread
+        spread_cd[n_out : n_in, times_in[i] :] = U.T.conj() @ spread_cd[n_out : n_in, times_in[i] :]
+
+        # switch rho_minus
+        rho_minus[n_out : n_in, n_out : ] = U.T.conj() @ rho_minus[n_out : n_in, n_out : ] 
+        rho_minus[n_out : , n_out : n_in] = rho_minus[n_out : , n_out : n_in] @ U 
+
+        # store rotation
+        U_cdia.append(U.T.conj())
+        
+        # propagate rho_minus 
+        for ti in range(times_in[i], times_in[i + 1]):
+            psi = la.as_column_vector(spread_cd[n_out + 1 : , ti])
+            rho_minus[n_out + 1 : , n_out + 1 : ] -= la.dyad(psi, psi) * dt
+            
+    # at the final time we do not produce output modes
+    U_cdia.append(None)
+    
+    
     
     
     
