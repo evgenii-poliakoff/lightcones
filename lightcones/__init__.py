@@ -113,13 +113,32 @@ def minimal_forward_frame(spread, rho_plus, dt, rtol):
             U_min[: n, :] = U.T.conj() @ U_min[: n, :]
             rho_plus_min = np.diag(pi[: -1].astype('cdouble'))
             times_in.insert(0, i + 1)
-            n = n_rel - len(times_in)
+            n = n - 1
 
         psi = la.as_column_vector(spread_min[: n, i])
         rho_plus_min -= la.dyad(psi, psi) * dt
         la.make_hermitean(rho_plus_min)
         
+    if n > 0:
+        for i in range(n):
+            times_in.insert(0, 0)
     times_in.append(ntg)
     
     return times_in, U_min, spread_min
+
+def m_in(times_in, ti):
+    for i in range(len(times_in) - 1):
+        if ti < times_in[0]:
+            return 0
+        if times_in[i] <= ti < times_in[i+1]:
+            return i + 1
+    raise ValueError("Index is out of maximal time")
+    
+
+def causal_diamond_frame(spread_min, times_in, U_min, rho_plus, dt, rtol, m):
+    
+    # skip first m arrival times
+    U_cdia = [None]**m
+    
+    
     
