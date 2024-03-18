@@ -141,7 +141,7 @@ def causal_diamond_frame(spread_min, times_in, U_min, rho_plus, dt, rtol, m):
     spread_cd = np.copy(spread_min)
     
     # skip first m arrival times
-    U_cdia = [None]**m
+    U_cd = [None]*m
     
     # rho_minus initial value:
     # skip first m arrival times
@@ -157,7 +157,7 @@ def causal_diamond_frame(spread_min, times_in, U_min, rho_plus, dt, rtol, m):
         n_in = i
         
         rho_cd = rho_minus[n_out : n_in, n_out : n_in]
-        pi, U = tools.find_eigs_ascending(rho_cd)
+        pi, U = la.find_eigs_ascending(rho_cd)
         
         # switch spread
         spread_cd[n_out : n_in, times_in[i] :] = U.T.conj() @ spread_cd[n_out : n_in, times_in[i] :]
@@ -167,7 +167,7 @@ def causal_diamond_frame(spread_min, times_in, U_min, rho_plus, dt, rtol, m):
         rho_minus[n_out : , n_out : n_in] = rho_minus[n_out : , n_out : n_in] @ U 
 
         # store rotation
-        U_cdia.append(U.T.conj())
+        U_cd.append(U.T.conj())
         
         # propagate rho_minus 
         for ti in range(times_in[i], times_in[i + 1]):
@@ -175,9 +175,10 @@ def causal_diamond_frame(spread_min, times_in, U_min, rho_plus, dt, rtol, m):
             rho_minus[n_out + 1 : , n_out + 1 : ] -= la.dyad(psi, psi) * dt
             
     # at the final time we do not produce output modes
-    U_cdia.append(None)
+    U_cd.append(None)
     
+    return spread_cd, U_cd
     
-    
-    
-    
+def moving_frame(spread_cd, ti_arrival, U_cd, dt, m):
+    pass
+    # return spread_mv, H_mv
