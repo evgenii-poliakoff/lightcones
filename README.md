@@ -80,7 +80,7 @@ Then run
 again. The necessary dependencies will be automatically downloaded. Then build the package
 
 ```
-python3 setup.py develop
+./build.sh
 ```
 
 

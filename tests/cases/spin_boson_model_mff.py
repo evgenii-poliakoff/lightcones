@@ -9,7 +9,6 @@ def compute_s_z_av():
     import lightcones as lc
     from lightcones import models
     from lightcones.solvers.schrodinger import solve
-    import matplotlib.pyplot as plt
     
     # construct the minimal forward frame:
     
@@ -35,11 +34,6 @@ def compute_s_z_av():
     ti_arrival, spread_min, U_min, rho_plus_min = lc.minimal_forward_frame(spread, rho_plus, dt, rtol)
     
     # Now solve the same problem in the minimal light cone frame
-    import numpy as np
-    from lightcones.linalg import mv
-    from lightcones import models
-    from lightcones.solvers.schrodinger import solve
-
     num_modes = 15
     max_num_quanta = 5
     m = models.spin_boson(num_modes, max_num_quanta)
@@ -64,20 +58,18 @@ def compute_s_z_av():
     psi_0 = np.zeros(m.dimension, dtype = complex)
     psi_0[0] = 1
 
-    Ht = None
-    Hint = m.space.zero_op
+    compute_s_z_av.Ht = None
+    compute_s_z_av.Hint = m.space.zero_op
 
     def begin_step(ti, psi):
         m_in = lc.m_in(ti_arrival, ti)
-        global Hint
         if m_in > 0:
-            Hint = V_dag @ sum(spread_min[: m_in, ti] * m.a[: m_in])
-            Hint = Hint + Hint.conj().transpose()
-        global Ht
-        Ht = Hs + m.s_x * f(ti) + Hint
+            compute_s_z_av.Hint = V_dag @ sum(spread_min[: m_in, ti] * m.a[: m_in])
+            compute_s_z_av.Hint = compute_s_z_av.Hint + compute_s_z_av.Hint.conj().transpose()
+        compute_s_z_av.Ht = Hs + m.s_x * f(ti) + compute_s_z_av.Hint
     
     def apply_h(ti, psi_in, psi_out):
-        mv(Ht, psi_in, psi_out)
+        mv(compute_s_z_av.Ht, psi_in, psi_out)
 
     # Here we store the average of observables
     s_z_av = []

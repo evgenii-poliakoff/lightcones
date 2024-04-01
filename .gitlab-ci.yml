@@ -16,7 +16,7 @@ build:
   stage: build
   script: 
     - echo "Enter build state..."
-    - python3 setup.py develop
+    - ./build.sh
   artifacts:
     paths:
       - '**/*.so'
