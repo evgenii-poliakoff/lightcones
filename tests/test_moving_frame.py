@@ -8,6 +8,7 @@ import lightcones as lc
 import lightcones.linalg as la
 
 def complex_converter(x):
+    x = x.decode('utf-8')
     return complex(x.strip('()'))
 
 def test_moving_frame():
