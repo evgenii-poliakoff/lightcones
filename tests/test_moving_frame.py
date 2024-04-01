@@ -51,3 +51,12 @@ def test_moving_frame():
         rho_plus_min_expected =  np.loadtxt(f, dtype=complex, converters=complex_converter)
     assert np.allclose(rho_plus_min, rho_plus_min_expected, rtol=1e-5, atol=1e-8), \
         f"rho_plus_min does not match the expected"
+        
+    # causal diamond frame
+    cd_dim = 4
+    spread_cd, U_cd = lc.causal_diamond_frame(spread_min, ti_arrival, U_min, rho_plus_min, dt, rtol, cd_dim)
+    
+    with pathlib.Path("./tests/cases/spread_cd.txt").open() as f:
+        spread_cd_expected =  np.loadtxt(f, dtype=complex, converters=complex_converter)
+    assert np.allclose(spread_cd, spread_cd_expected, rtol=1e-5, atol=1e-8), \
+        f"spread_min does not match the expected"
