@@ -157,7 +157,6 @@ def causal_diamond_frame(spread_min, times_in, U_min, rho_plus_min, dt, rtol, m)
     for ti in range(0, times_in[m]):
         psi = la.as_column_vector(spread_cd[:, ti])
         rho_minus -= la.dyad(psi, psi) * dt
-        la.make_hermitean(rho_minus)
     
     # produce U_cdia
     for i in range(m, len(times_in) - 1):
@@ -165,6 +164,7 @@ def causal_diamond_frame(spread_min, times_in, U_min, rho_plus_min, dt, rtol, m)
         n_out = i - m
         n_in = i
         
+        la.make_hermitean(rho_minus)
         rho_cd = rho_minus[n_out : n_in, n_out : n_in]
         pi, U = la.find_eigs_ascending(rho_cd)
 
