@@ -1,5 +1,7 @@
 import numpy as np
 import lightcones.linalg as la
+from scipy.linalg import eig
+from scipy.linalg import expm
 from lightcones.solvers.schrodinger import solve
 
 def spread(e, h, nt, dt):
@@ -84,9 +86,9 @@ def minimal_forward_frame(spread, rho_plus, dt, rtol):
     n_rel =  sum(inside_lightcone)
     
     # begin to construct the rotation U_min
-    U_min = U_rel
+    U_min = U_rel.T.conj()
     # also recompute the spread
-    spread_min = U_min.T.conj() @ spread
+    spread_min = U_min @ spread
     # and rho_plus 
     rho_plus_min = np.diag(pi[: n_rel].astype('cdouble'))
 
@@ -124,7 +126,9 @@ def minimal_forward_frame(spread, rho_plus, dt, rtol):
             times_in.insert(0, 0)
     times_in.append(ntg)
     
-    return times_in, U_min, spread_min
+    rho_plus_min = U_min @ rho_plus @ U_min.T.conj()
+    
+    return times_in, spread_min, U_min, rho_plus_min 
 
 def m_in(times_in, ti):
     for i in range(len(times_in) - 1):
@@ -133,9 +137,13 @@ def m_in(times_in, ti):
         if times_in[i] <= ti < times_in[i+1]:
             return i + 1
     raise ValueError("Index is out of maximal time")
-    
 
-def causal_diamond_frame(spread_min, times_in, U_min, rho_plus, dt, rtol, m):
+def get_inout_range(times_in, ti, m):
+    _m_in = m_in(times_in, ti)
+    _m_out = max(_m_in - m, 0)
+    return _m_out, _m_in
+
+def causal_diamond_frame(spread_min, times_in, U_min, rho_plus_min, dt, rtol, m):
     
     # spread in the causal diamond frame
     spread_cd = np.copy(spread_min)
@@ -145,10 +153,11 @@ def causal_diamond_frame(spread_min, times_in, U_min, rho_plus, dt, rtol, m):
     
     # rho_minus initial value:
     # skip first m arrival times
-    rho_minus = np.copy(rho_plus)
+    rho_minus = np.copy(rho_plus_min)
     for ti in range(0, times_in[m]):
         psi = la.as_column_vector(spread_cd[:, ti])
         rho_minus -= la.dyad(psi, psi) * dt
+        la.make_hermitean(rho_minus)
     
     # produce U_cdia
     for i in range(m, len(times_in) - 1):
@@ -158,7 +167,7 @@ def causal_diamond_frame(spread_min, times_in, U_min, rho_plus, dt, rtol, m):
         
         rho_cd = rho_minus[n_out : n_in, n_out : n_in]
         pi, U = la.find_eigs_ascending(rho_cd)
-        
+
         # switch spread
         spread_cd[n_out : n_in, times_in[i] :] = U.T.conj() @ spread_cd[n_out : n_in, times_in[i] :]
 
@@ -180,5 +189,43 @@ def causal_diamond_frame(spread_min, times_in, U_min, rho_plus, dt, rtol, m):
     return spread_cd, U_cd
     
 def moving_frame(spread_cd, ti_arrival, U_cd, dt, m):
-    pass
-    # return spread_mv, H_mv
+    # find generator 
+    H_mv = []
+    for i in range(len(U_cd)):
+        U = U_cd[i]
+        if U is None:
+            H_mv.append(None)
+            continue
+        a = ti_arrival[i - 1]
+        b = ti_arrival[i]
+        duration = (b - a) * dt
+        e_, v_ = eig(U)
+        e_ = np.log(e_ + 0j) / duration
+        H = v_ @ np.diag(e_) @ v_.conj().T
+        H_mv.append(H)
+        
+    # recompute couplings
+    spread_mv = np.copy(spread_cd)
+    for i in range(len(H_mv)):
+        H = H_mv[i]
+        if H is None:
+            continue
+        a = ti_arrival[i - 1]
+        b = ti_arrival[i]
+        n_out = i - m
+        n_in = i
+        U = np.eye(m, dtype = complex)
+        dU = expm(dt * H)
+        for j in range(a, b):
+            spread_mv[n_out : n_in, j] = U @ spread_mv[n_out : n_in, j]
+            U = dU @ U
+            
+    return spread_mv, H_mv
+
+def get_H(times_in, H_mv, ti):
+    for i in range(len(times_in) - 1):
+        if ti < times_in[0]:
+            return None
+        if times_in[i] <= ti < times_in[i+1]:
+            return H_mv[i + 1]
+    raise ValueError("Index is out of maximal time")
