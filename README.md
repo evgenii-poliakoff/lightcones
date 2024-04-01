@@ -20,7 +20,7 @@ Install the requirements:
 Build the package:
 
 ```
-python3 setup.py develop
+./build.sh
 ```
 
 Then cd to the tutorials subfolder and explore the jupyter notebooks:
@@ -59,7 +59,7 @@ Then run
 again. The necessary dependencies will be automatically downloaded. Then build the package
 
 ```
-python3 setup.py develop
+./build.sh
 ```
 
 ### Python distribution

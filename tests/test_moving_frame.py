@@ -60,3 +60,13 @@ def test_moving_frame():
         spread_cd_expected =  np.loadtxt(f, dtype=complex, converters=complex_converter)
     assert np.allclose(spread_cd, spread_cd_expected, rtol=1e-5, atol=1e-8), \
         f"spread_min does not match the expected"
+        
+    marker = np.empty((0, 0))
+    U_cd_computed = [m if m is not None else marker for m in U_cd]
+    U_cd_expected = np.load('./tests/cases/U_cd.npz')
+    ind = 0
+    for key in U_cd_expected.files:
+        assert np.allclose(U_cd_computed[ind], U_cd_expected[key], rtol=1e-5, atol=1e-8), \
+        f"U_cd does not match the expected for ind " + str(ind)
+        ind = ind + 1
+    
