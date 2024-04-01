@@ -20,7 +20,7 @@ class space:
         if max_total_occupation is None:
             max_total_occupation = sum(max_local_occupations)
             
-        self.global_exc = max_total_occupation #internal parameter
+        self.max_total_occupation = max_total_occupation #internal parameter
         self.statistics = statistics #internal parameter
             
         if statistics == 'Bose':
@@ -29,14 +29,14 @@ class space:
         #1)
                 self.modes = num_modes
         #2)
-                self.local_exc = np.full(self.modes, max_total_occupation)
+                self.max_local_occupations = np.full(self.modes, max_total_occupation)
                 self.j = np.full(self.modes, max_total_occupation)/2
                 #self.j = (np.full(self.modes, max_total_occupation) - 1)/2
             else:
         #1)
                 self.modes = num_modes #len(about_excitations)
         #2)
-                self.local_exc = np.array(max_local_occupations)
+                self.max_local_occupations = np.array(max_local_occupations)
                 self.j = np.array(max_local_occupations)/2
         
         elif statistics == 'Fermi':
@@ -44,12 +44,12 @@ class space:
         #1)
                 self.modes = num_modes
         #2)
-                self.local_exc = np.full(self.modes, 1)
+                self.max_local_occupations = np.full(self.modes, 1)
             else:
         #1)
                 self.modes = num_modes
         #2)
-                self.local_exc = np.array(max_local_occupations)
+                self.max_local_occupations = np.array(max_local_occupations)
                 
         else:
             raise Exception('Сhoose the statistics: Bose or Fermi') 
@@ -57,7 +57,7 @@ class space:
         if not max_local_occupations is None and not len(max_local_occupations) == num_modes:
             raise Exception("Number of modes should be equal to number of local occupation constrains")
         
-        self.local_exc1 = np.array(self.local_exc+1) #internal parameter
+        self.local_exc1 = np.array(self.max_local_occupations+1) #internal parameter
         
         #3)
         self.states_list = list(self.states_generator())
@@ -131,7 +131,7 @@ class space:
                 col = np.arange(self.dimension , dtype=int)
                 data = np.zeros(self.dimension )
                 for i in range(self.dimension ):
-                    if self.states_list[i][k] == self.local_exc[k] or sum(self.states_list[i]) == self.global_exc:#!!!!!!!!!!!!!!!!!!!!!!
+                    if self.states_list[i][k] == self.max_local_occupations[k] or sum(self.states_list[i]) == self.max_total_occupation:#!!!!!!!!!!!!!!!!!!!!!!
                         row[i] = i 
                     else:
                         current_state = list(self.states_list[i])
@@ -180,7 +180,7 @@ class space:
                 col = np.arange(self.dimension , dtype=int)
                 data = np.zeros(self.dimension )
                 for i in range(self.dimension ):
-                    if self.states_list[i][k] == self.local_exc[k] or sum(self.states_list[i]) == self.global_exc:#!!!!!!!!!!!!!!!!!!!!!!
+                    if self.states_list[i][k] == self.max_local_occupations[k] or sum(self.states_list[i]) == self.max_total_occupation:#!!!!!!!!!!!!!!!!!!!!!!
                         row[i] = i 
                     else:
                         current_state = list(self.states_list[i])
@@ -221,7 +221,7 @@ class space:
                 col = np.arange(self.dimension , dtype=int)
                 data = np.zeros(self.dimension )
                 for i in range(self.dimension ):
-                    if self.states_list[i][k] == self.local_exc[k] or sum(self.states_list[i]) == self.global_exc:
+                    if self.states_list[i][k] == self.max_local_occupations[k] or sum(self.states_list[i]) == self.max_total_occupation:
                         row[i] = i 
                     else:
                         current_state = list(self.states_list[i])
@@ -341,7 +341,7 @@ class space:
             j = len(self.local_exc1) - 1
             current_state = current_state[:j] + (current_state[j]+1,)
             n += 1
-            while n > self.global_exc or current_state[j] >= self.local_exc1[j]:
+            while n > self.max_total_occupation or current_state[j] >= self.local_exc1[j]:
                 j -= 1
                 if j < 0:
                     return
