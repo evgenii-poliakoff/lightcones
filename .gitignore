@@ -2,6 +2,7 @@
 __pycache__
 *.egg-info/
 tutorials/.ipynb_checkpoints/*
+tutorials/**/*.npz
 tutorials/**/*.txt
 tutorials/**/*.eps
 !tutorials/pictures/*.eps

@@ -70,4 +70,20 @@ def test_moving_frame():
         assert np.allclose(U_cd_computed[ind], U_cd_expected[key], rtol=1e-5, atol=1e-8), \
         f"U_cd does not match the expected for ind " + str(ind)
         ind = ind + 1
+        
+    # moving frame
+    spread_mv, H_mv = lc.moving_frame(spread_cd, ti_arrival, U_cd, dt, cd_dim)
+    
+    with pathlib.Path("./tests/cases/spread_mv.txt").open() as f:
+        spread_mv_expected =  np.loadtxt(f, dtype=complex, converters=complex_converter)
+    assert np.allclose(spread_mv, spread_mv_expected, rtol=1e-5, atol=1e-8), \
+        f"spread_min does not match the expected"
+        
+    H_mv_computed = [m if m is not None else marker for m in H_mv]
+    H_mv_expected = np.load('./tests/cases/H_mv.npz')
+    ind = 0
+    for key in H_mv_expected.files:
+        assert np.allclose(H_mv_computed[ind], H_mv_expected[key], rtol=1e-5, atol=1e-8), \
+        f"H_mv does not match the expected for ind " + str(ind)
+        ind = ind + 1
     
