@@ -7,6 +7,9 @@ import numpy as np
 import lightcones as lc
 import lightcones.linalg as la
 
+def complex_converter(x):
+    return complex(x.strip('()'))
+
 def test_moving_frame():
     # chain
     n_sites = 100
@@ -35,16 +38,16 @@ def test_moving_frame():
         f"ti_arrival does not match the expected"
         
     with pathlib.Path("./tests/cases/spread_min.txt").open() as f:
-        spread_min_expected =  np.loadtxt(f)
+        spread_min_expected =  np.loadtxt(f, dtype=complex, converters=complex_converter)
     assert np.allclose(spread_min, spread_min_expected, rtol=1e-5, atol=1e-8), \
         f"spread_min does not match the expected"
         
     with pathlib.Path("./tests/cases/U_min.txt").open() as f:
-        U_min_expected =  np.loadtxt(f)
+        U_min_expected =  np.loadtxt(f, dtype=complex, converters=complex_converter)
     assert np.allclose(U_min, U_min_expected, rtol=1e-5, atol=1e-8), \
         f"U_min does not match the expected"
         
     with pathlib.Path("./tests/cases/rho_plus_min.txt").open() as f:
-        rho_plus_min_expected =  np.loadtxt(f)
+        rho_plus_min_expected =  np.loadtxt(f, dtype=complex, converters=complex_converter)
     assert np.allclose(rho_plus_min, rho_plus_min_expected, rtol=1e-5, atol=1e-8), \
         f"rho_plus_min does not match the expected"
