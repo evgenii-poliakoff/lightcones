@@ -35,6 +35,6 @@ The concept of arrival times (inside the light cone interior) for degress of fre
 
 There is a frame such that the rate at which the modes arrive is minimal. (Roughly speaking, a frame in which the Lieb-Robinson velocity is minimal). A numerical procedure to construct such a frame is presented.
 
-### backward_lightcone.ipynb
+## backward_lightcone.ipynb
 
 Here we provide the code sample where the backward light cone is superposed on the minimal forward light cone. We call this the "causal diamond" frame. We demonstrate that the dynamics of the driven spin inside the boson bath is correctly reproduced.
