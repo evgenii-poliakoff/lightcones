@@ -38,3 +38,7 @@ There is a frame such that the rate at which the modes arrive is minimal. (Rough
 ## backward_lightcone.ipynb
 
 Here we provide the code sample where the backward light cone is superposed on the minimal forward light cone. We call this the "causal diamond" frame. We demonstrate that the dynamics of the driven spin inside the boson bath is correctly reproduced.
+
+## quantum_jumps.ipynb
+
+Here we provide the code sample where the modes which escape the backward light cone are measured via quantum jump Monte Carlo sampling. The jumps are implemented via the Schmidt decomposition of the bipartite system 'escaped mode'+'the rest'.

@@ -387,7 +387,8 @@ class space_kron:
         #4)
         self.eye = sparse.eye(self.dimension).tocsc()
        
-        
+        self.max_total_occupation = max(f1.max_total_occupation, f2.max_total_occupation)
+        self.max_local_occupation = None
         
         if (f1.statistics=='Fermi') and (f2.statistics=='Fermi'):
                        
@@ -462,6 +463,78 @@ class space_kron:
                 self.j_z.append(sparse.kron(f1.j_z[k], f2.eye).tocsc())
         
             self.j = np.copy(f1.j)
+            
+        # initialize the local outer projections
+        
+        n_max = self.max_total_occupation    
+        self.local_observables = self.local_projections_f(self, self.modes, n_max, None)
+        
+    def outer_index(self, ket, bra, mode): 
+        return self.local_observables[mode][ket][bra]
+    
+    def outer_list(self, ket, bra, mode):
+        o = self.emptyH
+        
+        for i in range(len(ket)):
+            for j in range(len(bra)):
+                o = o + ket[i] * (bra[j] + 1j * 0).conjugate() * self.outer_index(i, j, mode)
+                
+        return o
+    
+    def outer(self, ket, bra, mode):
+        
+        if isinstance(ket, list) and isinstance(bra, list):
+            return self.outer_list(ket, bra, mode)
+        
+        return self.outer_index(ket, bra, mode)
+        
+    def local_projections_f(self, f, m_max, n_max, id_s):
+        
+        from scipy.sparse import csc_matrix
+        
+        self.K = f.dimension
+        self.local_dim = n_max + 1
+        
+        a = f.annihilate
+        a_dag = f.create
+        
+        local_ops = []
+        
+        o_data = np.zeros(self.K, dtype = complex)
+        o_ind = np.zeros(self.K, dtype = np.int32)
+        
+        o_ptr = np.zeros(self.K + 1, dtype = np.int32)
+        for i in range(self.K + 1):
+            o_ptr[i] = i
+        
+        for i in range(0, m_max):
+            
+            o = np.array([f.occupations(j)[i] for j in range(self.K)])
+            
+            a_ = a[i]
+            b_ = a_dag[i]
+            
+            mode_op = [[] for l in range(self.local_dim)]
+            
+            for p in range(self.local_dim):
+                for q in range(self.local_dim):
+                    
+                    outer(a_.data, a_.indices, a_.indptr, \
+                        b_.data, b_.indices, b_.indptr, \
+                            o_data, o_ind, o, p, q)
+
+                    op = csc_matrix((np.copy(o_data), np.copy(o_ind), np.copy(o_ptr)), shape = (self.K, self.K))
+
+                    if not id_s is None:
+                        op = kron(id_s, op)
+                    mode_op[p].append(op)
+                    
+            local_ops.append(mode_op)
+            
+        if not id_s is None:
+            self.K = self.K * id_s.shape[0]
+        
+        return local_ops
             
     # sigma_x Pauli matrix
     def sigma_x(self, i):
