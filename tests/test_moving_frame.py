@@ -33,6 +33,14 @@ def test_moving_frame():
     rtol = 10**(-4)
     ti_arrival, spread_min, U_min, rho_plus_min = lc.minimal_forward_frame(spread, rho_plus, dt, rtol)
     
+    # only check first n_rel coefficients in spread
+    # because the modes which are irrelevant for the
+    # considered time interval
+    # are ill-conditioned
+    # (are nearly-degenerate wrt rho_plus hence
+    # defined up to spurious unitary transform)
+    n_rel = len(ti_arrival)
+    
     with pathlib.Path("./tests/cases/ti_arrival.txt").open() as f:
         ti_arrival_expected =  np.loadtxt(f)
     assert np.allclose(ti_arrival, ti_arrival_expected, rtol=1e-5, atol=1e-8), \
@@ -40,7 +48,7 @@ def test_moving_frame():
         
     with pathlib.Path("./tests/cases/spread_min.txt").open() as f:
         spread_min_expected = np.loadtxt(f, dtype=complex, converters=complex_converter)
-    assert np.allclose(spread_min, spread_min_expected, rtol=1e-5, atol=2e-8), \
+    assert np.allclose(spread_min[: n_rel, :], spread_min_expected[: n_rel, :], rtol=1e-5, atol=2e-8), \
         f"spread_min does not match the expected"
         
     with pathlib.Path("./tests/cases/U_min.txt").open() as f:
