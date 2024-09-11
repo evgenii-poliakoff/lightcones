@@ -19,7 +19,9 @@ class spin_chain:
         # dimension (number of basis vectors)
         # in a truncated hilbert space
         self.dimension = space.dimension
+        # zero operator
         self.zero_op = space.zero_op
+        # identity matrix
         self.eye = space.eye
         
         self.length = length
