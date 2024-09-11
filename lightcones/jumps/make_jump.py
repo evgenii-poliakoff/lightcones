@@ -3,6 +3,10 @@ from numpy import linalg as LA
 import random
 from lightcones.jumps import density_matrix
 
+# given wavefunction 'psi' from some multimode Hilbert space 'space'
+# make random quantum jump with the probabilities given by
+# Schmidt decomposition into
+# mode 'mode_index' and 'the rest of the system'
 def make_jump(psi, space, mode_index):
     # find the "preferred" jump basis
     rho = density_matrix(psi, space, mode_index)

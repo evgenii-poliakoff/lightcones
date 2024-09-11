@@ -1,6 +1,7 @@
 import numpy as np
 from . import _solve
 
+# solve the Schrodinger equation from time a to time b and a time step dt
 def solve(a, b, dt, apply_h, psi_0, begin_step = None, eval_o = None, psi = None, psi_mid = None, psi_mid_next = None, eval_a = 1):
     if begin_step is None:
         def begin_step(ti, psi):
