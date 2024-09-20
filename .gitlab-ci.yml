@@ -28,8 +28,8 @@ test:
   stage: test
   script:
     - echo "Enter test stage..."
-    - pip install pytest
-    - pip install pytest-pythonpath
+    #- pip install pytest
+    #- pip install pytest-pythonpath
     - pytest ./tests
   dependencies:
     - build
