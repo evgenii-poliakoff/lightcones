@@ -1,6 +1,8 @@
 import numpy as np
 from lightcones import fock
 
+# given wavefunction 'psi' from some multimode Hilbert space 'space' 
+# compute the reduced density matrix for the mode number 'mode_index'
 def density_matrix(psi, space, mode_index):
     local_dim = space.max_total_occupation
     if not space.max_local_occupation is None:

@@ -11,7 +11,20 @@ from scipy.sparse import diags
 import warnings
 from ._outer import outer
 
+
+# this class enumrates retained basis vectors for the Fock space
+# which is truncated in a number of ways:
+# 1) no more than given total number of excitations
+# 2) no more than given total number quanta on each site. 
 class space:
+    # statistics: 'Bose' or 'Fermi'
+    # num_modes: number of independent degrees of freedom (number of creation/annihilation operator pairs)
+    # max_total_occupation: keep only basis states in which no more than max_local_occupations
+    #                       quanta are excited
+    # max_local_occupations: keep only basis states in which no more than max_local_occupations quanta 
+    #                        at each site.
+    #                        max_local_occupations is a list: for the site i, max_local_occupations[i] gives the
+    #                        the constraint
     def __init__(self, statistics, num_modes, max_total_occupation = None, max_local_occupations = None):
     
         if max_total_occupation is None and max_local_occupations is None:
