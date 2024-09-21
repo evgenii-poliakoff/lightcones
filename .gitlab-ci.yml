@@ -9,30 +9,32 @@ setup:
     - echo "Enter setup stage..."
     - ./scripts/install_requirements.sh
   tags:
-    - ar
-    #- alba
+    #- ar
+    - alba
 
 build:
   stage: build
   script: 
     - echo "Enter build state..."
+    - source ~/.bashrc
+    - conda activate base
     - ./build.sh
   artifacts:
     paths:
       - '**/*.so'
   tags:
-    - ar
-    #- alba
+    #- ar
+    - alba
   
 test:
   stage: test
   script:
     - echo "Enter test stage..."
-    - pip install pytest
-    - pip install pytest-pythonpath
-    - pytest ./tests
+    - source ~/.bashrc
+    - conda activate base
+    - python3 -m pytest ./tests
   dependencies:
     - build
   tags:
-    - ar
-    #- alba
+    #- ar
+    - alba

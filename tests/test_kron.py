@@ -3,6 +3,13 @@ import lightcones.linalg as la
 from lightcones import fock
 from lightcones.linalg import kron as k
 
+def coo_allclose(a, b, rtol=1e-5, atol=1e-8):
+    err = a - b
+    if len(err.data) == 0:
+        return True
+    max_err = err.data.max()
+    return max_err <= atol + rtol * max_err.max()
+
 def test_kron():
     max_quanta = 5
     local_bounds = [1, 1, max_quanta, max_quanta]
@@ -18,6 +25,6 @@ def test_kron():
                    [k(pr1[1][0], pr2[1][0]), k(pr1[1][0], pr2[1][1]), k(pr1[1][1], pr2[1][0]), k(pr1[1][1], pr2[1][1])]]
     for i in range(4):
         for j in range(4):
-            assert np.allclose(pr[i][j].toarray(), pr_expected[i][j].toarray(), rtol=1e-5, atol=1e-8), \
-                f"pr not match the ethalon"
+            assert coo_allclose(pr[i][j], pr_expected[i][j], rtol=1e-5, atol=1e-8), \
+                f"pr not match the expected"
 

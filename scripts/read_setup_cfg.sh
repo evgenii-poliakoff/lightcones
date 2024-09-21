@@ -27,4 +27,4 @@ install_anaconda=$(sed -n "/^\[${SECTION}\]/,/^\[/ {/^${KEY}=/p}" $CONFIG_FILE |
 export INSTALL_ANACONDA="$install_anaconda"
 
 # Print the value to confirm it was successfully read
-echo "Detected install_anacond value: $INSTALL_ANACONDA"
+echo "Detected install_anaconda value: $INSTALL_ANACONDA"
