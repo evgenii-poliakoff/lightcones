@@ -29,11 +29,11 @@ def compute_s_z_av():
     # rho_plus
     rho_plus = lc.rho_plus(spread, dt)
 
-    # minimal light cone
+    # minimal forward light cone
     rtol = 10**(-4)
     ti_arrival, spread_min, U_min, rho_plus_min = lc.minimal_forward_frame(spread, rho_plus, dt, rtol)
     
-    # Now solve the same problem in the minimal light cone frame
+    # Now solve the spin boson model in the minimal forward frame
     num_modes = 15
     max_num_quanta = 5
     m = models.spin_boson(num_modes, max_num_quanta)
