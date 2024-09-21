@@ -3,7 +3,7 @@
 # Check if INSTALL_ANACONDA is set and if it's 'yes'
 if [ -n "$INSTALL_ANACONDA" ] && [ "$INSTALL_ANACONDA" == "yes" ]; then
     # Continue execution
-    echo "INSTALL_ANACONDA is set to intelem, will check for Anaconda3 python dependency..."
+    echo "INSTALL_ANACONDA is set to yes, will check for Anaconda3 python dependency..."
 else
     # Exit with a message if FCOMPILER is not 'intelem'
     echo "INSTALL_ANACONDA is not set to yes, will not check for Anaconda3 python dependency. Exiting"
