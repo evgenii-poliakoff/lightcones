@@ -16,6 +16,8 @@ build:
   stage: build
   script: 
     - echo "Enter build state..."
+    - source ~/.bashrc
+    - conda activate base
     #- source ./venv/bin/activate
     - ./build.sh
   artifacts:
@@ -29,10 +31,12 @@ test:
   stage: test
   script:
     - echo "Enter test stage..."
+    - source ~/.bashrc
+    - conda activate base
     #- pip install pytest
     #- pip install pytest-pythonpath
     #- source ./venv/bin/activate
-    - pytest ./tests
+    - python3 -m pytest ./tests
   dependencies:
     - build
   tags:

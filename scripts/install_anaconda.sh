@@ -13,6 +13,8 @@ fi
 FILEPATH="./dependencies/Anaconda3-2023.09-0-Linux-x86_64.sh"
 RAW_URL="https://repo.anaconda.com/archive/Anaconda3-2023.09-0-Linux-x86_64.sh"
 
+source ~/.bashrc
+
 if ! command -v conda list &> /dev/null
 then
     echo "Anaconda3 not found. Installing ..."
