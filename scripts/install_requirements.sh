@@ -3,4 +3,6 @@
 . ./scripts/read_setup_cfg.sh
 bash ./scripts/install_anaconda.sh
 bash ./scripts/install_intel_oneapi.sh
-pip install -r requirements.txt
+#python3 -m venv ./venv
+#source ./venv/bin/activate
+python3 -m pip install -r requirements.txt

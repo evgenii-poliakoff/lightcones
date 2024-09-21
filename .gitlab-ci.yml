@@ -16,6 +16,7 @@ build:
   stage: build
   script: 
     - echo "Enter build state..."
+    #- source ./venv/bin/activate
     - ./build.sh
   artifacts:
     paths:
@@ -30,6 +31,7 @@ test:
     - echo "Enter test stage..."
     #- pip install pytest
     #- pip install pytest-pythonpath
+    #- source ./venv/bin/activate
     - pytest ./tests
   dependencies:
     - build
