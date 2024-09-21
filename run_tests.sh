@@ -4,4 +4,4 @@
 ./build.sh
 #source ./venv/bin/activate
 export PYTEST_TIMEOUT=120
-strace python3 -m pytest ./tests
+python3 -m pytest ./tests

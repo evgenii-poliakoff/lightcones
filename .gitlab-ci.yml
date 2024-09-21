@@ -36,5 +36,5 @@ test:
   dependencies:
     - build
   tags:
-    - ar
-    #- alba
+    #- ar
+    - alba
