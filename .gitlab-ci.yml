@@ -33,6 +33,8 @@ test:
     - source ~/.bashrc
     - conda activate base
     - python3 -m pytest ./tests
+    - echo "Artifact generation completed"
+    - ls -lR tests/test_artifacts/
   dependencies:
     - build
   artifacts:
