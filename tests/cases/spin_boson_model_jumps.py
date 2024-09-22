@@ -13,7 +13,7 @@ class mvf:
     def __init__(self):
         pass
 
-    def compute_s_z_av(self):
+    def compute_s_z_av(self, n_samples):
             
         # construct the moving frame:
         
@@ -72,9 +72,16 @@ class mvf:
 
         self.Ht = None
         self.Hint = m.space.zero_op
+        self.m_out_prev = 0
 
         def begin_step(ti, psi):
             m_out, m_in = lc.get_inout_range(ti_arrival, ti, cd_dim)
+            
+            # if the number of decoupled modes is changed: we need to make a jump
+            if m_out != self.m_out_prev:
+                psi[:] = make_jump(psi, m.space, self.m_out_prev + 1) # + 1 because the first mode is the qubit
+                self.m_out_prev = m_out 
+            
             if m_in > 0:
                 self.Hint = V_dag @ sum(spread_mv[m_out : m_in, ti] * m.a[m_out : m_in])
                 self.Hint = self.Hint + self.Hint.conj().transpose()
@@ -91,14 +98,15 @@ class mvf:
             mv(self.Ht, psi_in, psi_out)
 
         # Here we store the average of observables
-        s_z_av = []
+        s_z_av = np.zeros(n_time)
 
         def eval_o(ti, psi):
-            s_z_av.append(np.vdot(psi, m.s_z @ psi))
+            s_z_av[ti] = s_z_av[ti] + np.vdot(psi, m.s_z @ psi)
 
-        solve(0, n_time-1, dt, apply_h, psi_0, begin_step = begin_step, eval_o = eval_o)
+        for i in range(n_samples):
+            self.m_out_prev = 0
+            solve(0, n_time-1, dt, apply_h, psi_0, begin_step = begin_step, eval_o = eval_o)
         
-        s_z_av = np.array(s_z_av)
         s_z_av_table = np.column_stack((t, s_z_av.real))
         
         return s_z_av_table

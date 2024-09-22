@@ -12,3 +12,4 @@ tutorials/**/*.gif
 !tutorials/pictures/*.gif
 dependencies/*
 build/*
+tests/test_artifacts/*

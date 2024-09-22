@@ -5,7 +5,7 @@ from lightcones.jumps import density_matrix
 
 # given wavefunction 'psi' from some multimode Hilbert space 'space'
 # make random quantum jump with the probabilities given by
-# Schmidt decomposition into
+# Schmidt decomposition for bipartition into
 # mode 'mode_index' and 'the rest of the system'
 def make_jump(psi, space, mode_index):
     # find the "preferred" jump basis
