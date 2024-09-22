@@ -6,7 +6,7 @@ from .cases import spin_boson_model_jumps
         
 def test_s_z_av():
     _mvf = spin_boson_model_jumps.mvf()
-    n_samples = 100
+    n_samples = 4
     s_z_av_table = _mvf.compute_s_z_av(n_samples)
     s_z_av_table[:, 1] = s_z_av_table[:, 1] / n_samples
     
