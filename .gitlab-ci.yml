@@ -38,6 +38,7 @@ test:
   dependencies:
     - build
   artifacts:
+    when: always
     paths:
       - tests/test_artifacts/*.txt
     expire_in: 4 week
