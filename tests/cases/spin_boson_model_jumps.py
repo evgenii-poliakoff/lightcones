@@ -8,7 +8,7 @@ from lightcones import models
 from lightcones.jumps import make_jump
 from lightcones.solvers.schrodinger import solve
 
-class trajectory:
+class mvf:
 
     def __init__(self):
         pass
