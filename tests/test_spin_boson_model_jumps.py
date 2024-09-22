@@ -11,6 +11,7 @@ def test_s_z_av():
     s_z_av_table[:, 1] = s_z_av_table[:, 1] / n_samples
     
     artifact_file = pathlib.Path("./tests/test_artifacts/s_z_av_spin_boson_jumps.txt")
+    artifact_file.parent.mkdir(parents=True, exist_ok=True)
     np.savetxt(artifact_file, s_z_av_table)
     
     with pathlib.Path("./tests/cases/s_z_av_spin_boson_cd.txt").open() as f:
