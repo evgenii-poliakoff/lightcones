@@ -37,7 +37,7 @@ test:
     - build
   artifacts:
     paths:
-      - tests/test_artifacts/
+      - tests/test_artifacts/*.txt
     expire_in: 4 week
   tags:
     #- ar
