@@ -9,8 +9,8 @@ setup:
     - echo "Enter setup stage..."
     - ./scripts/install_requirements.sh
   tags:
-    #- ar
-    - alba
+    - ar
+    #- alba
 
 build:
   stage: build
@@ -23,8 +23,8 @@ build:
     paths:
       - '**/*.so'
   tags:
-    #- ar
-    - alba
+    - ar
+    #- alba
   
 test:
   stage: test
@@ -41,5 +41,5 @@ test:
       - tests/test_artifacts/*.txt
     expire_in: 4 week
   tags:
-    #- ar
-    - alba
+    - ar
+    #- alba
