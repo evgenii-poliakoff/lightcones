@@ -7,13 +7,17 @@ import lightcones as lc
 from lightcones import models
 from lightcones.jumps import make_jump
 from lightcones.solvers.schrodinger import solve
+import random
 
 class mvf:
 
     def __init__(self):
         pass
 
-    def compute_s_z_av(self, n_samples):
+    def compute_s_z_av(self, n_samples, seed = None):
+            
+        if not seed is None:
+            random.seed(seed)
             
         # construct the moving frame:
         
