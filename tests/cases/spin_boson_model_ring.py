@@ -50,9 +50,9 @@ class mvf:
         spread_mv, H_mv = lc.moving_frame(spread_cd, ti_arrival, U_cd, dt, cd_dim)
         
         # Now solve the spin boson model in the moving frame
-        num_modes = 15
+        num_modes = cd_dim
         max_num_quanta = 5
-        m = models.spin_boson(cd_dim, max_num_quanta)
+        m = models.spin_boson(num_modes, max_num_quanta)
 
         wq = 1.0
         Hs = wq * m.s_p @ m.s_m
@@ -90,7 +90,10 @@ class mvf:
                 self.m_out_prev = m_out 
             
             if m_in > 0:
-                self.Hint = V_dag @ sum(spread_mv[m_out : m_in, ti] * m.a[m_out : m_in])
+                a = m.zero_op
+                for p in range(m_in - m_out):
+                    a = a + spread_mv[m_out + p, ti] * m.a[to_ring(m_out + p)]
+                self.Hint = V_dag @ a
                 self.Hint = self.Hint + self.Hint.conj().transpose()
             self.Ht = Hs + m.s_x * f(ti) + self.Hint
             Hw = m.zero_op
