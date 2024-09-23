@@ -35,6 +35,11 @@ test:
     - python3 -m pytest ./tests
   dependencies:
     - build
+  artifacts:
+    when: always
+    paths:
+      - tests/test_artifacts/*.txt
+    expire_in: 4 week
   tags:
     #- ar
     - alba
