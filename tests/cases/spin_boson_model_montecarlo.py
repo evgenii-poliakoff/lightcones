@@ -23,9 +23,8 @@ def compute_s_z_av(n_samples, n_cpu, seed = None):
     
     # Run the parallel computation
     with Pool(processes=n_cpu) as pool:
-        results = pool.map(compute_s_z_av_core, args_list)
+        results = pool.starmap(compute_s_z_av_core, args_list)
         
-    
     # Sum the result
     s_z_av_table = results[0]
     for r in results[1:]:
