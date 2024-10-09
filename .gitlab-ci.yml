@@ -8,6 +8,9 @@ setup:
   script:
     - echo "Enter setup stage..."
     - ./scripts/install_requirements.sh
+  cache:
+    paths:
+      - ./venv/
   tags:
     - ar
     #- alba
