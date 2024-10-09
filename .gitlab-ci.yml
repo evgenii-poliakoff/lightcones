@@ -11,6 +11,9 @@ setup:
   cache:
     paths:
       - ./venv/
+  artifacts:
+    paths:
+      - ./venv
   tags:
     - ar
     #- alba
