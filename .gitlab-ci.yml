@@ -31,7 +31,7 @@ test:
   script:
     - echo "Enter test stage..."
     - source ~/.bashrc
-    - conda activate base
+    - source ./venv/bin/activate
     - python3 -m pytest ./tests
   dependencies:
     - build

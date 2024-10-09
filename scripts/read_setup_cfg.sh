@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the file and section
-CONFIG_FILE="setup.cfg"
+CONFIG_FILE="setup.conf"
 
 # read build_ext/fcompiler
 

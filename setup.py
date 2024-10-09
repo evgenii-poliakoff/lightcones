@@ -1,55 +1,34 @@
-import setuptools
-from numpy.distutils.core import setup, Extension
-from configparser import ConfigParser
-import warnings
+import os
+import sys
+from setuptools import setup, find_packages
 
-# Determine what fortran compiler is chosen by the user
-# initialize a ConfigParser object
-config = ConfigParser()
-# read the setup.cfg file
-config.read('setup.cfg')
-# access the fcompiler value from the [build_ext] section
-fcompiler = config.get('build_ext', 'fcompiler')
-# access the [$fcompiler]_options value from the [build_ext] section
-fcompiler_options = config.get('user_options', fcompiler + '_options')
-fcompiler_options = fcompiler_options.split()
+package_name = "lightcones"
+install_requires = ["numpy", "scipy"]
 
-# Define the Fortran extensions
-_fastmul = Extension(
-    name='lightcones.linalg._fastmul',  
-    sources=['src/lightcones/linalg/fastmul.f90'],
-    extra_f90_compile_args=fcompiler_options
-)
+# Find all .so files in the package directory and its subdirectories
+def find_so_files(directory):
+    sos = []
+    for root, _, files in os.walk(directory):
+        for file in files:
+            if file.endswith('.so'):
+                sos.append(os.path.join(root, file))
+    return sos
 
-_dlancz = Extension(
-    name='lightcones.linalg._dlancz',  
-    sources=['src/lightcones/linalg/dlancz.f'],
-    extra_f77_compile_args=fcompiler_options
-)
+script_dir = os.path.dirname(os.path.realpath(__file__))
+with open(os.path.join(script_dir, "./VERSION")) as f:
+    version = f.read().rstrip()
 
-_solve = Extension(
-    name='lightcones.solvers.schrodinger._solve',  
-    sources=['src/lightcones/solvers/schrodinger/solve.f90'],
-    extra_f90_compile_args=fcompiler_options
-)
-
-_outer = Extension(
-    name='lightcones._outer',  
-    sources=['src/lightcones/outer.f90'],
-    extra_f90_compile_args=fcompiler_options
-)
-
-# Set up the configuration
-config = {
-    'name': 'lightcones',
-    'version': '0.1',
-    'description': 'Light cones package for real-time quantum impurity quenches',
-    'ext_modules': [_fastmul, _dlancz, _solve, _outer],
-    'packages': ['lightcones'],
-    'package_dir': {'lightcones': 'lightcones'},
-    'install_requires': [],
-    'zip_safe': False,
+setup_kwargs = {
+    "name": package_name,
+    "version": version,
+    "author": "Evgenii A. Poliakoff",
+    "author_email": "evgenii.poliakoff@mail.ru",
+    "url": "",
+    "description": "Light cones package for real-time quantum impurity quenches",
+    "packages": find_packages(),
+    "package_data": {package_name: find_so_files(os.path.join(script_dir, ".."))},
+    "install_requires": install_requires,
+    "zip_safe": False,
 }
 
-# Run the setup
-setup(**config)
+setup(**setup_kwargs)

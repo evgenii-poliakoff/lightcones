@@ -12,4 +12,6 @@ tutorials/**/*.gif
 !tutorials/pictures/*.gif
 dependencies/*
 build/*
+venv/*
+wheels/*
 tests/test_artifacts/*
