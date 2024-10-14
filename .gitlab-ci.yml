@@ -26,6 +26,8 @@ build:
     - echo "Enter build state..."
     - echo "Check python distribution:"
     - which python3
+    - echo "Check for intel compiler"
+    - which ifort
     - source ~/.bashrc
     - source ./venv/bin/activate
     - ./build.sh
