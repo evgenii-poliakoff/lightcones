@@ -2,6 +2,7 @@ import os
 import sys
 import numpy as np
 import pathlib
+import pytest
 
 import numpy as np
 import lightcones as lc
