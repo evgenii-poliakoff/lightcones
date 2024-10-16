@@ -6,7 +6,16 @@ stages:
 setup:
   stage: setup
   script:
+    - |
+      directory="./venv"
+      if [ -d "$directory" ]; then
+          rm -rf "$directory" 2>/dev/null || true
+      fi
     - echo "Enter setup stage..."
+    - directory="path/to/directory"
+    - if [ -d "$directory" ]; then
+      - rm -rf "$directory" 2>/dev/null || true
+    - fi
     - ./scripts/install_requirements.sh
     - echo "Check python distribution:"
     - which python3
