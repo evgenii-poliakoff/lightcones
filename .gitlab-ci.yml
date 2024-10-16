@@ -24,13 +24,16 @@ build:
   stage: build
   script: 
     - echo "Enter build state..."
-    - echo "Check python distribution:"
-    - which python3
-    - echo "Check for intel compiler"
-    - which ifort
+    # - echo "Check python distribution:"
+    # - which python3
+    #- echo "Check for intel compiler"
+    # - which ifort
     - source ~/.bashrc
+    - echo "#1"
     - source ./venv/bin/activate
+    - echo "#2"
     - ./build.sh
+    - echo "#3"
     - ./install.sh
   artifacts:
     paths:
