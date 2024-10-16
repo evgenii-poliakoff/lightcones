@@ -13,10 +13,10 @@ mkdir -p  "${script_dir}"/build
 
 pushd "${script_dir}"/build
 
-python3 -m numpy.f2py -c --quiet -m _outer ../src/lightcones/outer.f90 --fcompiler=intelem --f90flags=-fast
-python3 -m numpy.f2py -c --quiet -m _solve ../src/lightcones/solvers/schrodinger/solve.f90 --fcompiler=intelem --f90flags=-fast
-python3 -m numpy.f2py -c --quiet -m _dlancz ../src/lightcones/linalg/dlancz.f --fcompiler=intelem --f90flags=-fast
-python3 -m numpy.f2py -c --quiet -m _fastmul ../src/lightcones/linalg/fastmul.f90 --fcompiler=intelem --f90flags=-fast
+python3 -m numpy.f2py -c --quiet -m _outer ../src/lightcones/outer.f90 --fcompiler=gfortran --f90flags="-Ofast -ffree-line-length-512"
+python3 -m numpy.f2py -c --quiet -m _solve ../src/lightcones/solvers/schrodinger/solve.f90 --fcompiler=gfortran --f90flags="-Ofast -ffree-line-length-512"
+python3 -m numpy.f2py -c --quiet -m _dlancz ../src/lightcones/linalg/dlancz.f --fcompiler=gfortran --f90flags="-Ofast -ffree-line-length-512"
+python3 -m numpy.f2py -c --quiet -m _fastmul ../src/lightcones/linalg/fastmul.f90 --fcompiler=gfortran --f90flags="-Ofast -ffree-line-length-512"
 
 cp _outer.*.so ../lightcones
 cp _solve.*.so ../lightcones/solvers/schrodinger
