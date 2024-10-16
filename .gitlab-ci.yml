@@ -15,7 +15,7 @@ setup:
       - ./venv/
   artifacts:
     paths:
-      - ./venv
+      - ./venv/
   tags:
     - ar
     #- alba
@@ -24,16 +24,9 @@ build:
   stage: build
   script: 
     - echo "Enter build state..."
-    # - echo "Check python distribution:"
-    # - which python3
-    #- echo "Check for intel compiler"
-    # - which ifort
     - source ~/.bashrc
-    - echo "#1"
     - source ./venv/bin/activate
-    - echo "#2"
     - ./build.sh
-    - echo "#3"
     - ./install.sh
   artifacts:
     paths:
@@ -46,9 +39,8 @@ test:
   stage: test
   script:
     - echo "Enter test stage..."
-    - echo "Check python distribution:"
-    - which python3
     - source ~/.bashrc
+    - ls ./venv/bin
     - source ./venv/bin/activate
     - python3 -m pytest ./tests
   dependencies:
