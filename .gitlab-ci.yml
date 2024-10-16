@@ -17,8 +17,7 @@ setup:
       - rm -rf "$directory" 2>/dev/null || true
     - fi
     - ./scripts/install_requirements.sh
-    - echo "Check python distribution:"
-    - which python3
+    - ls ./venv
   cache:
     paths:
       - ./venv/
@@ -33,6 +32,7 @@ build:
   stage: build
   script: 
     - echo "Enter build state..."
+    - ls ./venv
     - source ~/.bashrc
     - source ./venv/bin/activate
     - ./build.sh
