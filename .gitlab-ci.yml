@@ -40,6 +40,9 @@ test:
   script:
     - echo "Enter test stage..."
     - source ~/.bashrc
+    - pwd
+    - ls
+    - ls ./venv
     - ls ./venv/bin
     - source ./venv/bin/activate
     - python3 -m pytest ./tests
