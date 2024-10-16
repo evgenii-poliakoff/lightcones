@@ -37,8 +37,12 @@ build:
     - source ./venv/bin/activate
     - ./build.sh
     - ./install.sh
+  cache:
+    paths:
+      - ./venv/
   artifacts:
     paths:
+      - ./venv/
       - '**/*.so'
   tags:
     - ar
