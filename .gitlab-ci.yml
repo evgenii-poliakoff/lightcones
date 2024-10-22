@@ -6,18 +6,11 @@ stages:
 setup:
   stage: setup
   script:
-    #- |
-    #  directory="./venv"
-    #  if [ -d "$directory" ]; then
-    #      rm -rf "$directory" 2>/dev/null || true
-    #  fi
     - echo "Enter setup stage..."
     - ./scripts/install_requirements.sh
     - ls ./venv
-  cache:
-    paths:
-      - ./venv/
   artifacts:
+    untracked: true
     paths:
       - ./venv/
   tags:
@@ -33,10 +26,8 @@ build:
     - source ./venv/bin/activate
     - ./build.sh
     - ./install.sh
-  cache:
-    paths:
-      - ./venv/
   artifacts:
+    untracked: true
     paths:
       - ./venv/
       - '**/*.so'
@@ -55,10 +46,9 @@ test:
     - ls ./venv/bin
     - source ./venv/bin/activate
     - python3 -m pytest ./tests
-  dependencies:
-    - build
   artifacts:
     when: always
+    untracked: true
     paths:
       - tests/test_artifacts/*.txt
     expire_in: 4 week
