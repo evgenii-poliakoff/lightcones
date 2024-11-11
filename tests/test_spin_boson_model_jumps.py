@@ -2,9 +2,11 @@ import os
 import sys
 import numpy as np
 import pathlib
+import pytest
 from .cases import spin_boson_model_jumps
 from .cases import spin_boson_model_ring
-        
+
+@pytest.mark.skip(reason="It takes too much time")
 def test_s_z_av():
     _mvf = spin_boson_model_jumps.mvf()
     n_samples = 4

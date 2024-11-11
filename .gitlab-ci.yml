@@ -8,38 +8,44 @@ setup:
   script:
     - echo "Enter setup stage..."
     - ./scripts/install_requirements.sh
+  artifacts:
+    untracked: true
+    paths:
+      - ./venv/
   tags:
-    #- ar
-    - alba
+    - ar
+    #- alba
 
 build:
   stage: build
   script: 
     - echo "Enter build state..."
     - source ~/.bashrc
-    - conda activate base
+    - source ./venv/bin/activate
     - ./build.sh
+    - ./install.sh
   artifacts:
+    untracked: true
     paths:
+      - ./venv/
       - '**/*.so'
   tags:
-    #- ar
-    - alba
+    - ar
+    #- alba
   
 test:
   stage: test
   script:
     - echo "Enter test stage..."
     - source ~/.bashrc
-    - conda activate base
+    - source ./venv/bin/activate
     - python3 -m pytest ./tests
-  dependencies:
-    - build
   artifacts:
     when: always
+    untracked: true
     paths:
       - tests/test_artifacts/*.txt
     expire_in: 4 week
   tags:
-    #- ar
-    - alba
+    - ar
+    #- alba

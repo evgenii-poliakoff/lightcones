@@ -41,26 +41,6 @@ sudo apt update
 sudo apt install gfortran -y
 ```
 
-However, this requires administrative priveleges. 
-
-If you need to install fortran for local user (e.g. on a server account without root access), you can install Intel Fortran Compiler, which is free for non-commercial use. For this purpose, set the fcompiler option to "intelem" in setup.cfg file:
-
-```
-[build_ext]
-fcompiler=intelem
-```
-
-Then run
-
-```
-./scripts/install_requirements.sh
-```
-
-again. The necessary dependencies will be automatically downloaded. Then build the package
-
-```
-./build.sh
-```
 
 ### Python distribution
 
