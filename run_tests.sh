@@ -1,7 +1,14 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-./scripts/install_requirements.sh
-./build.sh
+set -euo pipefail
+
+script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
+venv_dir="${script_dir}"/venv
+
 source ~/.bashrc
-conda activate base
-python3 -m pytest ./tests
+./scripts/ensure_venv.sh
+source "${venv_dir}"/bin/activate
+
+echo INFO Running lightcone tests
+
+python3 -m pytest "${script_dir}"/tests

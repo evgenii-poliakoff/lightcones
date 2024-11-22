@@ -9,6 +9,8 @@ source ~/.bashrc
 ./scripts/ensure_venv.sh
 source "${venv_dir}"/bin/activate
 
+echo INFO Building lightcones package
+
 mkdir -p  "${script_dir}"/build
 
 pushd "${script_dir}"/build

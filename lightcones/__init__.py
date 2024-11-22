@@ -236,7 +236,12 @@ import lightcones.solvers as solvers
 import lightcones.models as models
 import lightcones.jumps as jumps
 
-__all__ = ['linalg', 
+import lightcones.space as space
+
+__all__ = ['linalg',
+           'space',
+           'bounding_condition',
+           'skip_condition', 
            'solvers', 
            'models', 
            'jumps',
