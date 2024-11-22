@@ -97,6 +97,9 @@ def find_eigs_descending(m):
     v = np.flip(v, axis = 1)
     return (e, v)
 
+def is_list_of_any(a):
+    return isinstance(a, list)
+
 def is_list_list_of_any(a):
     return all(isinstance(sublist, list) for sublist in a)
 
@@ -111,7 +114,31 @@ def is_vector(a):
 def kron_sparse_sparse(a, b):
     return scipy.sparse.kron(a, b, format = 'csc')
 
-def kron_list_list(a, b): 
+def kron_list_sparse(a, b):
+    kr = []
+    n = len(a)
+    for i in range(n):
+        kr.append(kron(a[i], b))
+        
+    return kr
+
+def kron_sparse_list(a, b):
+    kr = []
+    n = len(b)
+    for i in range(n):
+        kr.append(kron(a, b[i]))
+        
+    return kr
+
+def kron_list_list(a, b):
+    kr = []
+    n = len(a)
+    for i in range(n):
+        kr.append(kron(a[i], b))
+    
+    return kr    
+
+def kron_list2_list2(a, b): 
     n1 = len(a)
     m1 = len(a[0])
     n2 = len(b)
@@ -138,7 +165,16 @@ def kron(a, b):
         return kron_sparse_sparse(a, b)
     
     if is_list_list_of_any(a) and is_list_list_of_any(b):
+        return kron_list2_list2(a, b)
+    
+    if is_list_of_any(a) and is_sparse_matrix(b):
+        return kron_list_sparse(a, b)
+    
+    if is_list_of_any(a) and is_list_of_any(b):
         return kron_list_list(a, b)
+    
+    if is_sparse_matrix(a) and is_list_of_any(b):
+        return kron_sparse_list(a, b)
     
     raise Exception('Unsupported types for kron')
 

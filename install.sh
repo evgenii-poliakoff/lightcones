@@ -7,4 +7,6 @@ source ~/.bashrc
 ./scripts/ensure_venv.sh
 source "${venv_dir}"/bin/activate
 
+echo INFO Installing lightcones package
+
 python3 -m pip install --force-reinstall ./wheels/lightcones-0.0.1-py3-none-any.whl
