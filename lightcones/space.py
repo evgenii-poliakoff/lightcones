@@ -163,6 +163,11 @@ class fermions:
             a_k_dag.eliminate_zeros()
             self.a_dag.append(a_k_dag.tocsc())
             
+            #
+            self.n = []
+            for k in range(self.states.num_modes):
+                self.n.append(self.a_dag[k] @ self.a[k])
+            
     def vac(self):
         state = np.zeros(self.states.dimension, dtype = complex)
         state[0] = 1.0
