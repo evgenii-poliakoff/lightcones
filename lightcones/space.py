@@ -250,3 +250,50 @@ class spins:
         state = np.zeros(self.states.dimension, dtype = complex)
         state[0] = 1.0
         return state
+
+# bipartite system as a kron of left 'L' and right 'R' parts
+class bipartite:
+    def __init__(self, L_dimension, R_dimension):
+        self.L_dimension = L_dimension
+        self.R_dimension = R_dimension
+        self.all_states = list(self.state_generator())
+        self.enumerated_states = {state: idx for idx, state in enumerate(self.all_states)}
+        self.dimension = len(self.all_states)
+        
+    def state_generator(self):
+        for l in range(self.L_dimension):
+            for r in range(self.R_dimension):
+                yield (l, r)
+                
+    def index_of(self, state):
+        return self.enumerated_states[state]
+        
+    # reduce the state of a bipartite system by tracing out left part
+    def trace_out_L(self, psi):
+        rho_R = np.zeros((self.R_dimension, self.R_dimension), dtype = complex)
+        
+        for i in range(self.R_dimension):
+            for j in range(self.R_dimension):
+                rho_ij = 0
+                for k in range(self.L_dimension):
+                    ind_1 = self.index_of((i, k))
+                    ind_2 = self.index_of((j, k))
+                    rho_ij += psi[ind_1].conj() * psi[ind_2]
+                rho_R[i, j] = rho_ij
+                
+        return rho_R
+    
+    # reduce the state of a bipartite system by tracing out right part
+    def trace_out_R(self, psi):
+        rho_L = np.zeros((self.L_dimension, self.L_dimension), dtype = complex)
+        
+        for i in range(self.L_dimension):
+            for j in range(self.L_dimension):
+                rho_ij = 0
+                for k in range(self.R_dimension):
+                    ind_1 = self.index_of((k, i))
+                    ind_2 = self.index_of((k, j))
+                    rho_ij += psi[ind_1].conj() * psi[ind_2]
+                rho_L[i, j] = rho_ij
+                
+        return rho_L
