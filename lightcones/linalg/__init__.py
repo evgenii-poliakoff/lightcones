@@ -21,6 +21,9 @@ from typing import Any
 from ._fastmul import fastmul
 from . import _dlancz
 
+def eye(m):
+    return scipy.sparse.eye(m).tocsc()
+
 # compute
 # vout = cin * m @ vin + cout * vout
 # using the fortran optimized code
