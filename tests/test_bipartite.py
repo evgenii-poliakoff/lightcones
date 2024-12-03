@@ -45,3 +45,18 @@ def test_bipartite_occupations():
              
     assert np.allclose(occ, occ_expected, rtol=0, atol=0), \
         f"occ does not match"
+        
+def test_bipartite_index_of():
+        
+    j = 3
+    s1 = sp.states(1, bounding_condition=sp.bounding_condition.more_than_n_occupied(2 * j))
+    q = sp.spins(j, s1)
+    
+    s2 = sp.states(2, bounding_condition=sp.bounding_condition.more_than_in_total(3))
+    b = sp.bosons(s2)
+    
+    bp = sp.bipartite(q.states.dimension, b.states.dimension)
+        
+    occ = (4, 2, 0)
+    ind = bp.index_of((occ[0], b.states.index_of(occ[1:])))
+    assert ind == 47, "ind does not match"
