@@ -114,4 +114,3 @@ def test_bipartite_trace_out_R():
     
     assert np.allclose(rho_actual, rho_expected, atol=tol), \
         f"rho does not match"
-    
