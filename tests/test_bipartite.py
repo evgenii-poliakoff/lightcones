@@ -67,6 +67,8 @@ def test_bipartite_index_of():
     
 def test_bipartite_trace_out_L():
     
+    # case 1
+    
     j = 3
     s1 = sp.states(1, bounding_condition=sp.bounding_condition.more_than_n_occupied(2 * j))
     q = sp.spins(j, s1)
@@ -90,7 +92,28 @@ def test_bipartite_trace_out_L():
     assert np.allclose(rho_actual, rho_expected, atol=tol), \
         f"rho does not match"
         
+    # case 2
+    
+    s = sp.states(3, bounding_condition=sp.bounding_condition.more_than_singly_occupied())
+    f = sp.fermions(s)
+    
+    bp = sp.bipartite(f.states.dimension, f.states.dimension)
+    
+    psi = bp.vector_with((f.states.index_of((0, 0, 0)), f.states.index_of((1, 1, 1)))) / math.sqrt(2.0) \
+        + bp.vector_with((f.states.index_of((1, 1, 1)), f.states.index_of((0, 0, 0)))) / math.sqrt(2.0)
+        
+    rho_actual = bp.trace_out_L(psi)
+    
+    rho_expected = \
+        ll.projection_to(f.states.vector_with((0, 0, 0))) / 2.0 + \
+        ll.projection_to(f.states.vector_with((1, 1, 1))) / 2.0
+        
+    assert np.allclose(rho_actual, rho_expected, atol=tol), \
+        f"rho does not match"
+        
 def test_bipartite_trace_out_R():
+    
+    # case 1
     
     j = 3
     s1 = sp.states(1, bounding_condition=sp.bounding_condition.more_than_n_occupied(2 * j))
@@ -112,5 +135,24 @@ def test_bipartite_trace_out_R():
         ll.projection_to(q.states.vector_with((1,))) / 3.0 + \
         ll.projection_to(q.states.vector_with((2,))) / 3.0
     
+    assert np.allclose(rho_actual, rho_expected, atol=tol), \
+        f"rho does not match"
+        
+    # case 2
+    
+    s = sp.states(3, bounding_condition=sp.bounding_condition.more_than_singly_occupied())
+    f = sp.fermions(s)
+    
+    bp = sp.bipartite(f.states.dimension, f.states.dimension)
+    
+    psi = bp.vector_with((f.states.index_of((0, 0, 0)), f.states.index_of((1, 1, 1)))) / math.sqrt(2.0) \
+        + bp.vector_with((f.states.index_of((1, 0, 1)), f.states.index_of((0, 0, 0)))) / math.sqrt(2.0)
+        
+    rho_actual = bp.trace_out_R(psi)
+    
+    rho_expected = \
+        ll.projection_to(f.states.vector_with((0, 0, 0))) / 2.0 + \
+        ll.projection_to(f.states.vector_with((1, 0, 1))) / 2.0
+        
     assert np.allclose(rho_actual, rho_expected, atol=tol), \
         f"rho does not match"
