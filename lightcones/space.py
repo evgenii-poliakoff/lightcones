@@ -56,6 +56,11 @@ class states:
     
     def index_of(self, state):
         return self.enumerated_states[state]
+    
+    def vector_with(self, state):
+        v = np.zeros(self.dimension, dtype = complex)
+        v[self.index_of(state)] = 1.0
+        return v
             
 class bosons:
     def __init__(self, states):
@@ -267,6 +272,11 @@ class bipartite:
                 
     def index_of(self, state):
         return self.enumerated_states[state]
+    
+    def vector_with(self, state):
+        v = np.zeros(self.dimension, dtype = complex)
+        v[self.index_of(state)] = 1.0
+        return v
         
     # reduce the state of a bipartite system by tracing out left part
     def trace_out_L(self, psi):
@@ -276,8 +286,8 @@ class bipartite:
             for j in range(self.R_dimension):
                 rho_ij = 0
                 for k in range(self.L_dimension):
-                    ind_1 = self.index_of((i, k))
-                    ind_2 = self.index_of((j, k))
+                    ind_1 = self.index_of((k, i))
+                    ind_2 = self.index_of((k, j))
                     rho_ij += psi[ind_1].conj() * psi[ind_2]
                 rho_R[i, j] = rho_ij
                 
@@ -291,8 +301,8 @@ class bipartite:
             for j in range(self.L_dimension):
                 rho_ij = 0
                 for k in range(self.R_dimension):
-                    ind_1 = self.index_of((k, i))
-                    ind_2 = self.index_of((k, j))
+                    ind_1 = self.index_of((i, k))
+                    ind_2 = self.index_of((j, k))
                     rho_ij += psi[ind_1].conj() * psi[ind_2]
                 rho_L[i, j] = rho_ij
                 

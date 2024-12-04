@@ -50,14 +50,25 @@ def tridiag(e, h):
     n = len(e)
     return spdiags(data, diags, n, n).tocsc()
 
-# make dyad |ket><bra|
-def dyad(ket, bra):
-    return np.kron(ket, bra.T.conj())
-
 # make column vector |ket>
 # from the array ket
 def as_column_vector(ket):
-    return ket[:, None]
+    shape = ket.shape
+    if (len(shape) == 1):
+        return ket[:, None]
+    if (len(shape) == 2 and shape[1] == 1):
+        return ket
+    raise RuntimeError("shape of input array is incompatible with the column vector")
+
+# make dyad |ket><bra|
+def dyad(ket, bra):
+    ket = as_column_vector(ket)
+    bra = as_column_vector(bra)
+    return np.kron(ket, bra.T.conj())
+
+def projection_to(ket):
+    ket = as_column_vector(ket)
+    return dyad(ket, ket)
 
 # take Hermitean part of the square matrix m
 def make_hermitean(m):

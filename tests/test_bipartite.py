@@ -1,6 +1,10 @@
 import numpy as np
 import pathlib
+import math
 import lightcones.space as sp
+import lightcones.linalg as ll
+
+tol = 1e-10
 
 def test_bipartite_all_states():
     
@@ -60,3 +64,28 @@ def test_bipartite_index_of():
     occ = (4, 2, 0)
     ind = bp.index_of((occ[0], b.states.index_of(occ[1:])))
     assert ind == 47, "ind does not match"
+    
+def test_bipartite_trace_out_L():
+    
+    j = 3
+    s1 = sp.states(1, bounding_condition=sp.bounding_condition.more_than_n_occupied(2 * j))
+    q = sp.spins(j, s1)
+    
+    s2 = sp.states(2, bounding_condition=sp.bounding_condition.more_than_in_total(3))
+    b = sp.bosons(s2)
+    
+    bp = sp.bipartite(q.states.dimension, b.states.dimension)
+    
+    psi = bp.vector_with((0, b.states.index_of((0, 0)))) / math.sqrt(3.0) \
+        + bp.vector_with((1, b.states.index_of((1, 0)))) / math.sqrt(3.0) \
+        + bp.vector_with((2, b.states.index_of((1, 1)))) / math.sqrt(3.0)
+        
+    rho_actual = bp.trace_out_L(psi)
+    
+    rho_expected = \
+        ll.projection_to(b.states.vector_with((0, 0))) / 3.0 + \
+        ll.projection_to(b.states.vector_with((1, 0))) / 3.0 + \
+        ll.projection_to(b.states.vector_with((1, 1))) / 3.0
+    
+    assert np.allclose(rho_actual, rho_expected, atol=tol), \
+        f"rho does not match"
