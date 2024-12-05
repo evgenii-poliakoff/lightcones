@@ -7,6 +7,9 @@ class spinfull_fermions:
         states = sp.states(num_modes, bounding_condition=sp.bounding_condition.more_than_singly_occupied())
         f = sp.fermions(states)
         
+        #
+        self.fermions = f
+        
         self.eye = kron(f.eye, f.eye)
         self.parity = kron(f.parity, f.parity)
         
