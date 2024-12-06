@@ -277,34 +277,54 @@ def dot(a, b):
             
     raise Exception('Unsupported type of a for dot')
 
-# Lanczos recursion method
+# Lanczos recursion method.
 # psi0 is assumed to be normalized:
 # np.vdot(psi0, psi0) == 1
-# H is some matrix which can be muptiplied via @
+# H is some Hermitean matrix which can be muptiplied via @
 # returns: n x n tridiagonal matrix
 # representation of H
 def lancz_recursion(psi0, H, n):
+    
+    tol = 1e-9
     
     a = np.zeros(n)
     b = np.zeros(n - 1)
     
     psiH = H @ psi0
-    a[0] = np.vdot(psiH, psi0)
+    a[0] = np.vdot(psiH, psi0).real
     psi1 = psiH - a[0] * psi0
-    b[1 - 1] = math.sqrt(np.vdot(psi1, psi1))
+    b[1 - 1] = math.sqrt(np.vdot(psi1, psi1).real)
+    
+    if abs(b[1 - 1]) < tol:
+        return tridiag(a[:1], b[:0])
+    
     psi1 = psi1 / b[1 - 1]
     psiH = H @ psi1
-    a[1] = np.vdot(psiH, psi1)
+    a[1] = np.vdot(psiH, psi1).real
     
     for k in range(2, n):
         psi2 = psiH - a[k - 1] * psi1 - b[k - 1 - 1] * psi0
-        b[k - 1] = math.sqrt(np.vdot(psi2, psi2))
+        b[k - 1] = math.sqrt(np.vdot(psi2, psi2).real)
+        
+        if abs(b[k - 1]) < tol:
+            return tridiag(a[:k], b[:k - 1])
+        
         psi2 = psi2 / b[k - 1]
         psiH = H @ psi2
-        a[k] = np.vdot(psiH, psi2)
+        a[k] = np.vdot(psiH, psi2).real
         psi2, psi1, psi0 = psi0, psi2, psi1
     
     return tridiag(a, b)
+
+# find ground state of Hamiltonian H via
+# Lanczos recursion method.
+# psi0 is assumed to be normalized:
+# np.vdot(psi0, psi0) == 1
+# H is some Hermitean matrix which can be muptiplied via @
+def lancz_gnd_state(psi0, H, n):
+    H_tridiag = lancz_recursion(psi0, H, n)
+    e, v = find_smallest_eigs(H_tridiag.todense(), 1)
+    return (e, v)
 
     
     

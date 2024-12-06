@@ -10,6 +10,9 @@ class spinfull_fermions:
         #
         self.fermions = f
         
+        #
+        self.dimension = f.states.dimension**2
+        
         self.eye = kron(f.eye, f.eye)
         self.parity = kron(f.parity, f.parity)
         
