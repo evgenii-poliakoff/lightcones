@@ -24,3 +24,6 @@ def test_lancz_gnd_state():
     
     assert abs(e_expected - e_actual) < tol, \
         f"e does not match"
+        
+    assert abs(np.vdot(v_expected, v_actual) - 1.0) < tol, \
+        f"v does not match"
