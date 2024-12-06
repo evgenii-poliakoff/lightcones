@@ -283,7 +283,17 @@ def dot(a, b):
 # H is some Hermitean matrix which can be muptiplied via @
 # returns: n x n tridiagonal matrix
 # representation of H
-def lancz_recursion(psi0, H, n):
+# if coeff are given 
+# then the state is returned
+# |psi> = sum_0^(n-1) coeff_i |v_i>
+# where |v_i> is the i-th 
+# Lanczos basis vector
+def lancz_recursion(psi0, H, n, coeff = None):
+    
+    if not coeff is None:
+        psi = coeff[0] * psi0
+        print(0, psi.shape)
+        
     
     tol = 1e-9
     
@@ -296,9 +306,17 @@ def lancz_recursion(psi0, H, n):
     b[1 - 1] = math.sqrt(np.vdot(psi1, psi1).real)
     
     if abs(b[1 - 1]) < tol:
-        return tridiag(a[:1], b[:0])
+        if not coeff is None:
+            return psi
+        else:
+            return tridiag(a[:1], b[:0])
     
     psi1 = psi1 / b[1 - 1]
+    
+    if not coeff is None:
+        psi += coeff[1] * psi1
+        print(1, psi.shape)
+    
     psiH = H @ psi1
     a[1] = np.vdot(psiH, psi1).real
     
@@ -307,14 +325,26 @@ def lancz_recursion(psi0, H, n):
         b[k - 1] = math.sqrt(np.vdot(psi2, psi2).real)
         
         if abs(b[k - 1]) < tol:
-            return tridiag(a[:k], b[:k - 1])
+            if not coeff is None:
+                return psi
+            else:
+                return tridiag(a[:k], b[:k - 1])
         
         psi2 = psi2 / b[k - 1]
+        
+        if not coeff is None:
+            psi += coeff[k] * psi2
+            print(k, psi.shape)
+        
         psiH = H @ psi2
         a[k] = np.vdot(psiH, psi2).real
         psi2, psi1, psi0 = psi0, psi2, psi1
     
-    return tridiag(a, b)
+    if not coeff is None:
+        print('fin', psi.shape)
+        return psi
+    else:
+        return tridiag(a, b)
 
 # find ground state of Hamiltonian H via
 # Lanczos recursion method.
@@ -324,6 +354,9 @@ def lancz_recursion(psi0, H, n):
 def lancz_gnd_state(psi0, H, n):
     H_tridiag = lancz_recursion(psi0, H, n)
     e, v = find_smallest_eigs(H_tridiag.todense(), 1)
+    print(v.shape)
+    v = lancz_recursion(psi0, H, n, v.flatten())
+    print(v.shape)
     return (e, v)
 
     
