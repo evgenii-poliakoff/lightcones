@@ -257,6 +257,28 @@ class spins:
         return state
 
 # bipartite system as a kron of left 'L' and right 'R' parts
+
+# for fermions, given set of left states |Lk>, k = 1 ... L_dimension
+# and a set of right states |Rl>, l = 1 ... R_dimension
+# Also given left canonical operators a_L , a_L_dag and right canonical operators a_R, a_R_dag
+# We construct the "product" state space as
+# |kl> = |Lk>|Rl> for k, l running in the respective ranges/
+# The canonical operators are embedded into the "product" state space as
+# a_L -> a_L_ = a_L * identity_R, a_L_dag -> a_L_dag_ = a_L_dag * identity_R
+# a_R -> a_R_ = parity_L * a_R, a_R_dag -> a_R_dag_ = parity_L * a_R_dag
+# where parity_L * |Lk> gives the parity of number of particles in |Lk>
+# the anticommutation relations are ensured:
+# (parity_L * a_R) * (a_L * identity_R) = parity_L * a_L * a_R * identity_R
+#  = - a_L * parity_L * a_R * identity_R 
+#  = - (a_L * identity_R) * (parity_L * a_R)
+
+# Given two fermion systems with states
+# |L> = f(a_L_dag) |0>_L and |R> = g(a_R_dag) |0>_R
+# the product state is 
+# |LR> = f(a_L_dag_) g(a_R_dag_) |0>_L |0>_R
+
+# 
+
 class bipartite:
     def __init__(self, L_dimension, R_dimension):
         self.L_dimension = L_dimension
