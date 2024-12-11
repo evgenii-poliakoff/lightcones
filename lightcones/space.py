@@ -277,7 +277,47 @@ class spins:
 # the product state is 
 # |LR> = f(a_L_dag_) g(a_R_dag_) |0>_L |0>_R
 
-# 
+# Implementation:
+# if |L> = f(a_L_dag) |0>_L 
+#        = \sum_{n, p} f{n, p} * a_L_dag[0]^p[0] ... a_L_dag[n]^p[n] * |0>_L
+#        = \sum_{n, p} f{n, p} * |{n,p}>_L
+# and
+#    |R> = g(a_R_dag) |0>_R 
+#        = \sum_{n, p} g{n, p} * a_R_dag[0]^p[0] ... a_R_dag[n]^p[n] * |0>_R
+#        = \sum_{n, p} g{n, p} * |{n,p}>_R
+# then
+#    |LR> = sum_{n,m,p,q} f{n, p} * f{m, q} 
+#           * a_L_dag_[0]^p[0] ... a_L_dag_[n]^p[n]
+#           * a_R_dag_[0]^p[0] ... a_R_dag_[n]^p[n] * |0>_L * |0>_R (note underscores in operators)
+#         = sum_{n,m,p,q} f{n, p} * g{m, q} |{n,p,m,q}>_LR
+#         = sum_{ind} f{ind_L_n, ind_L_p} * f{ind_R_m, ind_R_q} * |{ind_L_n,ind_L_p,ind_L_m,ind_L_q}>_LR
+# here ind is the numeration of the "product" basis in the order consistent with the matrix kron 
+
+# The partial trace operation should satisfy the following
+# physical constraints:
+# 1). 
+# For |Psi> = f(a_L_dag_) g(a_R_dag_) |0>_L |0>_R
+# rho_L = Tr_R[ |Psi><Psi| ] =  g(a_R_dag) |0>_R <0|_R g^*(a_R)
+# rho_R = Tr_L[ |Psi><Psi| ] =  f(a_L_dag) |0>_L <0|_L f^*(a_L)
+# provided |R> =  g(a_R_dag) |0>_R is normalized and
+#          |L> =  f(a_L_dag) |0>_L is normalized
+# 2).
+# For |Psi> = \sum_k c_k f_k(a_L_dag_) g_k(a_R_dag_) |0>_L |0>_R
+# rho_L = Tr_R[ |Psi><Psi| ] =  \sum_k |c_k|^2 * g_k(a_R_dag) |0>_R <0|_R g_k^*(a_R)
+# rho_R = Tr_L[ |Psi><Psi| ] =   \sum_k |c_k|^2 * f_k(a_L_dag) |0>_L <0|_L f_k^*(a_L)
+# provided <Li|Lj> = delta_ij and <Ri|Rj> = delta_ij
+# where |Lj> = f_j(a_L_dag) |0>_L
+#       |Rj> = g_j(a_R_dag) |0>_R
+#
+# We implement this operation as
+# rho_R = Tr_L[ |Psi><Psi| ] 
+#    = \sum_{n,m,p,q} rho_R{n,m,p,q} * a_R_dag_[0]^p[0] ... a_R_dag_[n]^p[n]
+#                 * |0>_R <0|_R
+#                 * a_R_[m]^q[m] ... a_R_[0]^q[0]  (note inverse ordering!)
+# where
+#    rho_R{n,m,p,q} = \sum{n_L,m_L,p_L,q_L} Psi{n_L,p_L,n,p} Psi^*{m_L,q_L,m,q}
+# for |Psi> =  \sum{n_L,p_L,n,p} Psi{n_L,p_L,n,p} |{n_L,p_L,n,p}>_LR
+#  which satisfy requirements 1) and 2)                     
 
 class bipartite:
     def __init__(self, L_dimension, R_dimension):
