@@ -288,9 +288,9 @@ class spins:
 # then
 #    |LR> = sum_{n,m,p,q} f{n, p} * f{m, q} 
 #           * a_L_dag_[0]^p[0] ... a_L_dag_[n]^p[n]
-#           * a_R_dag_[0]^p[0] ... a_R_dag_[n]^p[n] * |0>_L * |0>_R (note underscores in operators)
+#           * a_R_dag_[0]^q[0] ... a_R_dag_[m]^q[m] * |0>_L * |0>_R (note underscores in operators)
 #         = sum_{n,m,p,q} f{n, p} * g{m, q} |{n,p,m,q}>_LR
-#         = sum_{ind} f{ind_L_n, ind_L_p} * f{ind_R_m, ind_R_q} * |{ind_L_n,ind_L_p,ind_L_m,ind_L_q}>_LR
+#         = sum_{ind} f{ind_L_n, ind_L_p} * g{ind_R_m, ind_R_q} * |{ind_L_n,ind_L_p,ind_L_m,ind_L_q}>_LR
 # here ind is the numeration of the "product" basis in the order consistent with the matrix kron 
 
 # The partial trace operation should satisfy the following
@@ -339,6 +339,16 @@ class bipartite:
         v = np.zeros(self.dimension, dtype = complex)
         v[self.index_of(state)] = 1.0
         return v
+    
+    def kron(self, psi_L, psi_R):
+        psi = np.zeros(self.dimension, dtype = complex)
+        
+        for i in range(self.L_dimension):
+            for j in range(self.R_dimension):
+                ind = self.index_of((i, j))
+                psi[ind] = psi_L[i] * psi_R[j]
+                
+        return psi
         
     # reduce the state of a bipartite system by tracing out left part
     def trace_out_L(self, psi):

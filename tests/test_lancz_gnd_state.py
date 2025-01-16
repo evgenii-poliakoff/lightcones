@@ -22,7 +22,7 @@ def test_lancz_gnd_state():
     psi0 = f.a_dag[0][3] @ f.a_dag[1][3] @ psi0
     e_actual, v_actual = ll.lancz_gnd_state(psi0, H_S, 10)
     
-    assert abs(e_expected - e_actual) < tol, \
+    assert abs(e_expected[0] - e_actual) < tol, \
         f"e does not match"
         
     assert abs(np.vdot(v_expected, v_actual) - 1.0) < tol, \

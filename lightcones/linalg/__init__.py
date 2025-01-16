@@ -120,7 +120,10 @@ def is_list_list_of_any(a):
 
 # check whether a is a csc_matrix type
 def is_sparse_matrix(a):
-    return isinstance(a, scipy.sparse.csc_matrix)
+    if isinstance(a, scipy.sparse.csc_matrix):
+        return True
+    #if isinstance(a, numpy.ndarray) and a.ndim == 2:
+    #    return
 
 # check whether a is a vector type
 def is_vector(a):
@@ -350,4 +353,4 @@ def lancz_gnd_state(psi0, H, n):
     H_tridiag = lancz_recursion(psi0, H, n)
     e, v = find_smallest_eigs(H_tridiag.todense(), 1)
     v = lancz_recursion(psi0, H, n, v.flatten())
-    return (e, v)
+    return (e[0], v)

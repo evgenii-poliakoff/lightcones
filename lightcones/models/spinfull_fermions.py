@@ -1,4 +1,5 @@
 
+import numpy as np
 import lightcones.space as sp
 from lightcones.linalg import kron
 
@@ -25,3 +26,9 @@ class spinfull_fermions:
         
         # n is even operator
         self.n = [kron(f.n, f.eye),  kron(f.eye, f.n)]
+        
+    # vacuum state
+    def vac(self):
+        state = np.zeros(self.dimension, dtype = complex)
+        state[0] = 1.0
+        return state
