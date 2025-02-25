@@ -3,6 +3,10 @@ import lightcones.linalg as la
 from lightcones import fock
 from lightcones.linalg import kron as k
 import lightcones.space as sp
+import lightcones.models as md
+import scipy.sparse as spr
+
+tol = 1e-10
 
 def coo_allclose(a, b, rtol=1e-5, atol=1e-8):
     err = a - b
@@ -28,6 +32,20 @@ def test_kron_old():
         for j in range(4):
             assert coo_allclose(pr[i][j], pr_expected[i][j], rtol=1e-5, atol=1e-8), \
                 f"pr not match the expected"
+                
+def test_kron():
+    
+    f = md.spinfull_fermions(5)
+    
+    a = k(f.a[0][0], f.eye)
+    a_expected = spr.kron(f.a[0][0], f.eye, format = 'csc')
+    
+    assert np.allclose(a.data, a_expected.data, atol=tol), \
+        f"data for a"
+    assert np.array_equal(a.indices, a_expected.indices), \
+        f"indices for a"
+    assert np.array_equal(a.indptr, a_expected.indptr), \
+        f"indptr for a"
                 
 def test_kron_sl():
     s1 = sp.states(3, bounding_condition=sp.bounding_condition.more_than_singly_occupied())

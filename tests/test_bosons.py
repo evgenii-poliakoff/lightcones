@@ -81,7 +81,7 @@ def test_bosons():
     
     data = [1.+0.j, 1.41421356237+0.j, 1.+0.j, 1.+0.j]
     indices = [0, 1, 3, 6]
-    indptr = [0, 0, 0, 0, 1, 2, 3, 3, 3, 4, 4]
+    indptr = [0, 0, 1, 2, 2, 3, 3, 3, 4, 4, 4]
     
     assert np.allclose(m3.data, data, atol=tol), \
         f"data for a[2]"
