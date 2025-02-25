@@ -39,7 +39,8 @@ test:
     - echo "Enter test stage..."
     - source ~/.bashrc
     - source ./venv/bin/activate
-    - python3 -m pytest ./tests
+    - ./run_tests.sh
+    #- python3 -m pytest ./tests
   artifacts:
     when: always
     untracked: true

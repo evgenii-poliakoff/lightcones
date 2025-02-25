@@ -12,6 +12,7 @@ __all__ = [
     'kron'
 ]
 
+import math
 import numpy as np
 import scipy.sparse
 from scipy.sparse import spdiags
@@ -20,6 +21,9 @@ from typing import List
 from typing import Any
 from ._fastmul import fastmul
 from . import _dlancz
+
+def eye(m):
+    return scipy.sparse.eye(m).tocsc()
 
 # compute
 # vout = cin * m @ vin + cout * vout
@@ -47,14 +51,25 @@ def tridiag(e, h):
     n = len(e)
     return spdiags(data, diags, n, n).tocsc()
 
-# make dyad |ket><bra|
-def dyad(ket, bra):
-    return np.kron(ket, bra.T.conj())
-
 # make column vector |ket>
 # from the array ket
 def as_column_vector(ket):
-    return ket[:, None]
+    shape = ket.shape
+    if (len(shape) == 1):
+        return ket[:, None]
+    if (len(shape) == 2 and shape[1] == 1):
+        return ket
+    raise RuntimeError("shape of input array is incompatible with the column vector")
+
+# make dyad |ket><bra|
+def dyad(ket, bra):
+    ket = as_column_vector(ket)
+    bra = as_column_vector(bra)
+    return np.kron(ket, bra.T.conj())
+
+def projection_to(ket):
+    ket = as_column_vector(ket)
+    return dyad(ket, ket)
 
 # take Hermitean part of the square matrix m
 def make_hermitean(m):
@@ -105,7 +120,10 @@ def is_list_list_of_any(a):
 
 # check whether a is a csc_matrix type
 def is_sparse_matrix(a):
-    return isinstance(a, scipy.sparse.csc_matrix)
+    if isinstance(a, scipy.sparse.csc_matrix):
+        return True
+    #if isinstance(a, numpy.ndarray) and a.ndim == 2:
+    #    return
 
 # check whether a is a vector type
 def is_vector(a):
@@ -261,3 +279,78 @@ def dot(a, b):
         return dot_vector_list_list(a, b)
             
     raise Exception('Unsupported type of a for dot')
+
+# Lanczos recursion method.
+# psi0 is assumed to be normalized:
+# np.vdot(psi0, psi0) == 1
+# H is some Hermitean matrix which can be muptiplied via @
+# returns: n x n tridiagonal matrix
+# representation of H
+# if coeff are given 
+# then the state is returned
+# |psi> = sum_0^(n-1) coeff_i |v_i>
+# where |v_i> is the i-th 
+# Lanczos basis vector
+def lancz_recursion(psi0, H, n, coeff = None):
+    
+    if not coeff is None:
+        psi = coeff[0] * psi0        
+    
+    tol = 1e-9
+    
+    a = np.zeros(n)
+    b = np.zeros(n - 1)
+    
+    psiH = H @ psi0
+    a[0] = np.vdot(psiH, psi0).real
+    psi1 = psiH - a[0] * psi0
+    b[1 - 1] = math.sqrt(np.vdot(psi1, psi1).real)
+    
+    if abs(b[1 - 1]) < tol:
+        if not coeff is None:
+            return psi
+        else:
+            return tridiag(a[:1], b[:0])
+    
+    psi1 = psi1 / b[1 - 1]
+    
+    if not coeff is None:
+        psi += coeff[1] * psi1
+    
+    psiH = H @ psi1
+    a[1] = np.vdot(psiH, psi1).real
+    
+    for k in range(2, n):
+        psi2 = psiH - a[k - 1] * psi1 - b[k - 1 - 1] * psi0
+        b[k - 1] = math.sqrt(np.vdot(psi2, psi2).real)
+        
+        if abs(b[k - 1]) < tol:
+            if not coeff is None:
+                return psi
+            else:
+                return tridiag(a[:k], b[:k - 1])
+        
+        psi2 = psi2 / b[k - 1]
+        
+        if not coeff is None:
+            psi += coeff[k] * psi2
+        
+        psiH = H @ psi2
+        a[k] = np.vdot(psiH, psi2).real
+        psi2, psi1, psi0 = psi0, psi2, psi1
+    
+    if not coeff is None:
+        return psi
+    else:
+        return tridiag(a, b)
+
+# find ground state of Hamiltonian H via
+# Lanczos recursion method.
+# psi0 is assumed to be normalized:
+# np.vdot(psi0, psi0) == 1
+# H is some Hermitean matrix which can be muptiplied via @
+def lancz_gnd_state(psi0, H, n):
+    H_tridiag = lancz_recursion(psi0, H, n)
+    e, v = find_smallest_eigs(H_tridiag.todense(), 1)
+    v = lancz_recursion(psi0, H, n, v.flatten())
+    return (e[0], v)
