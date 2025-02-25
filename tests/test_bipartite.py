@@ -160,8 +160,8 @@ def test_bipartite_trace_out_R():
 
 def test_bipartite_vac():
     
-    l = lm.spinfull_fermions(2)
-    r = lm.spinfull_fermions(3)
+    l = lm.fermions_with_spin(2)
+    r = lm.fermions_with_spin(3)
     bp = sp.bipartite(l.dimension, r.dimension)
     
     vac_actual = bp.vac()
@@ -174,8 +174,8 @@ def test_bipartite_vac():
 
 def test_bipartite_kron():
     
-    l = lm.spinfull_fermions(2)
-    r = lm.spinfull_fermions(3)
+    l = lm.fermions_with_spin(2)
+    r = lm.fermions_with_spin(3)
 
     bp = sp.bipartite(l.dimension, r.dimension)
 

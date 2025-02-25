@@ -35,7 +35,7 @@ def test_kron_old():
                 
 def test_kron():
     
-    f = md.spinfull_fermions(5)
+    f = md.fermions_with_spin(5)
     
     a = k(f.a[0][0], f.eye)
     a_expected = spr.kron(f.a[0][0], f.eye, format = 'csc')
