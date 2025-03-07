@@ -340,6 +340,11 @@ class bipartite:
         v[self.index_of(state)] = 1.0
         return v
     
+    # given wavefunction of the left part psi_L
+    # and wavefunction of the right part psi_R,
+    # construct their tensor product
+    # (i.e. joint quantum state of the bipartite
+    #  psi_L \otimes psi_R)
     def kron(self, psi_L, psi_R):
         psi = np.zeros(self.dimension, dtype = complex)
         

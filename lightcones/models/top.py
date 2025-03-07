@@ -16,6 +16,7 @@ class top:
         #
         
         self.states = s
+        self.dimension = s.dimension
         
         #
         
