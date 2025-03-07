@@ -5,7 +5,8 @@ __all__ = [
     'fermion_2_fermion_leads',
     'spin_chain',
     'fermion_chain',
-    'fermions_with_spin'
+    'fermions_with_spin',
+    'top'
 ]
 
 from .star2chain import *
@@ -14,3 +15,4 @@ from .fermion_2_fermion_leads import *
 from .spin_chain import *
 from .fermion_chain import *
 from .fermions_with_spin import *
+from .top import *
