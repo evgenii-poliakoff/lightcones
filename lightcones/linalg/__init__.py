@@ -75,6 +75,7 @@ def projection_to(ket):
 def make_hermitean(m):
     m += m.T.conj()
     m /= 2
+    return m
 
 # find k largest eigenvalues of matrix m
 # sorted in the descending order
