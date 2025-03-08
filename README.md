@@ -23,10 +23,10 @@ Build the package:
 ./build.sh
 ```
 
-Then cd to the tutorials subfolder and explore the jupyter notebooks:
+Then cd to the notebooks subfolder and explore the jupyter notebooks:
 
 ```
-cd tutorials
+cd notebooks
 ```
 
 ## Supported Options

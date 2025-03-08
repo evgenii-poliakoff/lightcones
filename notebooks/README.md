@@ -1,4 +1,4 @@
-# Contents of the tutorials folder
+# Contents of the notebooks folder
 
 ## spin_boson_model.ipynb
 
