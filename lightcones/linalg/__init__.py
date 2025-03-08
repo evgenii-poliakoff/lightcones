@@ -123,12 +123,23 @@ def is_list_list_of_any(a):
 def is_sparse_matrix(a):
     if isinstance(a, scipy.sparse.csc_matrix):
         return True
-    #if isinstance(a, numpy.ndarray) and a.ndim == 2:
-    #    return
+    
+def is_dense_matrix(a):
+    if isinstance(a, np.ndarray) and a.ndim == 2:
+        return True
 
 # check whether a is a vector type
 def is_vector(a):
     return isinstance(a, np.ndarray) and len(a.shape) == 1
+
+def kron_dense_dense(a, b):
+    return np.kron(a, b)
+
+def kron_dense_sparse(a, b):
+    return np.kron(a, b.todense())
+
+def kron_sparse_dense(a, b):
+    return np.kron(a.todense(), b)
 
 def kron_sparse_sparse(a, b):
     return scipy.sparse.kron(a, b, format = 'csc')
@@ -180,6 +191,16 @@ def kron_list2_list2(a, b):
 # then do elementwise kron
 
 def kron(a, b):
+    
+    if is_dense_matrix(a) and is_dense_matrix(b):
+        return kron_dense_dense(a, b)
+    
+    if is_dense_matrix(a) and is_sparse_matrix(b):
+        return kron_dense_sparse(a, b)
+    
+    if is_sparse_matrix(a) and is_dense_matrix(b):
+        return kron_sparse_dense(a, b)
+    
     if is_sparse_matrix(a) and is_sparse_matrix(b):
         return kron_sparse_sparse(a, b)
     

@@ -178,3 +178,10 @@ def test_top_zero():
         0, 0]
     assert np.array_equal(z.indptr, indptr), \
         f"indptr for zero"
+        
+def test_top_state_with():
+    
+     t = top(11)
+     state = t.state_with(j_z=5)
+     j_z = np.vdot(state, t.j_z @ state).real
+     assert abs(j_z - 5) < tol

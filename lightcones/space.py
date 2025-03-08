@@ -177,7 +177,7 @@ class fermions:
         state = np.zeros(self.states.dimension, dtype = complex)
         state[0] = 1.0
         return state
-            
+        
 class spins:
     def __init__(self, j, states):
         self.states = states

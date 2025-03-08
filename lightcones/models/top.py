@@ -1,3 +1,4 @@
+import math
 import numpy as np
 import scipy
 from scipy.sparse import coo_matrix
@@ -41,4 +42,11 @@ class top:
         state[0] = 1.0
         return state
     
-    
+    # state with given j_z
+    def state_with(self, j_z):
+        p = j_z + self.j
+        state = self.vac()
+        for i in range(p):
+            state = self.j_p @ state 
+        state = state / math.sqrt(np.vdot(state, state).real)
+        return state
