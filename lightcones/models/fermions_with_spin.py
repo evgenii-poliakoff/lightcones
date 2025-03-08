@@ -3,7 +3,7 @@ import numpy as np
 import lightcones.space as sp
 from lightcones.linalg import kron
 
-class spinfull_fermions:
+class fermions_with_spin:
     def __init__(self, num_modes):
         states = sp.states(num_modes, bounding_condition=sp.bounding_condition.more_than_singly_occupied())
         f = sp.fermions(states)

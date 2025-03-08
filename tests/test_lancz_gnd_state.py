@@ -6,7 +6,7 @@ tol = 1e-10
 
 def test_lancz_gnd_state():
     
-    f = lm.spinfull_fermions(5)
+    f = lm.fermions_with_spin(5)
     
     U = 1
     t = 0.05

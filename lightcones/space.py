@@ -177,7 +177,7 @@ class fermions:
         state = np.zeros(self.states.dimension, dtype = complex)
         state[0] = 1.0
         return state
-            
+        
 class spins:
     def __init__(self, j, states):
         self.states = states
@@ -340,6 +340,11 @@ class bipartite:
         v[self.index_of(state)] = 1.0
         return v
     
+    # given wavefunction of the left part psi_L
+    # and wavefunction of the right part psi_R,
+    # construct their tensor product
+    # (i.e. joint quantum state of the bipartite
+    #  psi_L \otimes psi_R)
     def kron(self, psi_L, psi_R):
         psi = np.zeros(self.dimension, dtype = complex)
         

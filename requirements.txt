@@ -6,3 +6,4 @@ scipy
 ipykernel
 matplotlib
 wheel
+joblib

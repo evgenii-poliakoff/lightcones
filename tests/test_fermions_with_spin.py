@@ -2,15 +2,15 @@ import numpy as np
 import pytest
 import lightcones.linalg as ll
 import lightcones.space as sp
-from lightcones.models import spinfull_fermions
+from lightcones.models import fermions_with_spin
 
 tol = 1e-10
 
-def test_spinfull_fermions():
+def test_fermions_with_spin():
     
     # case 1
     
-    f = spinfull_fermions(1)
+    f = fermions_with_spin(1)
     
     U = 1
     
@@ -28,7 +28,7 @@ def test_spinfull_fermions():
         
     # case 2
     
-    f = spinfull_fermions(1)
+    f = fermions_with_spin(1)
     
     U = 1
     mu = U * (1/2.0 + 1/3.0)
@@ -49,7 +49,7 @@ def test_spinfull_fermions():
     
     # case 3
     
-    f = spinfull_fermions(2)
+    f = fermions_with_spin(2)
     
     t = 0.2
     U = 0.3
@@ -67,9 +67,9 @@ def test_spinfull_fermions():
     assert np.allclose(E, E_expected, atol=tol), \
         f"E does not match"
         
-    def test_spinfull_fermions_vac():
+    def test_fermions_with_spin_vac():
         
-        f = spinfull_fermions(2)
+        f = fermions_with_spin(2)
         
         vac_actual = f.vac
         
