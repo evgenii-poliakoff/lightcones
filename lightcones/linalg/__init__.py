@@ -133,13 +133,13 @@ def is_vector(a):
     return isinstance(a, np.ndarray) and len(a.shape) == 1
 
 def kron_dense_dense(a, b):
-    return np.kron(a, b)
+    return np.asarray(np.kron(a, b))
 
 def kron_dense_sparse(a, b):
-    return np.kron(a, b.todense())
+    return np.asarray(np.kron(a, b.todense()))
 
 def kron_sparse_dense(a, b):
-    return np.kron(a.todense(), b)
+    return np.asarray(np.kron(a.todense(), b))
 
 def kron_sparse_sparse(a, b):
     return scipy.sparse.kron(a, b, format = 'csc')
