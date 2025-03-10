@@ -40,3 +40,4 @@ python3 -m venv "${venv_dir}"
 source "${venv_dir}"/bin/activate
 python3 -m pip install --upgrade pip
 python3 -m pip install --upgrade -r "${script_dir}"/../requirements.txt
+python3 -m ipykernel install --user --name lightcones_venv --display-name "lightcones_venv"
