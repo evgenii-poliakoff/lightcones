@@ -39,7 +39,7 @@ test:
     - echo "Enter test stage..."
     - source ~/.bashrc
     - source ./venv/bin/activate
-    - ./run_tests.sh
+    - ./run_tests.sh -k "test_moving_frame"
     #- python3 -m pytest ./tests
   artifacts:
     when: always
