@@ -138,6 +138,13 @@ def m_in(times_in, ti):
             return i + 1
     raise ValueError("Index is out of maximal time")
 
+def get_time_interval(times_in, ti):
+    for i in range(len(times_in) - 1):
+        if ti < times_in[0]:
+            return 0, times_in[0]
+        if times_in[i] <= ti < times_in[i+1]:
+            return times_in[i], times_in[i+1]
+
 def get_inout_range(times_in, ti, m):
     _m_in = m_in(times_in, ti)
     _m_out = max(_m_in - m, 0)
