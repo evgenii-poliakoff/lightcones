@@ -11,7 +11,7 @@ notebooks/**/*.jpg
 notebooks/**/*.gif
 !notebooks/pictures/*.gif
 !notebooks/wigner_function/pictures/*.eps
-dependencies/*
+scripts/dependencies/*
 build/*
 venv/*
 wheels/*
