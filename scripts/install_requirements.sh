@@ -4,28 +4,30 @@ script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 
 set -euo pipefail
 
-source "${script_dir}"/read_settings.sh
-
-# Check if install_anacoda is set and if it's 'yes'
-if [ -n "$install_anaconda3" ] && [ "$install_anaconda3" == "yes" ]; then
-    echo "install_anaconda3 is set to yes, will check for Anaconda3 python dependency..."
-    # reload ~/.bashrc if anaconda3 python was installed
-    source ~/.bashrc
-    # check for conda command
-    if ! command -v conda list &> /dev/null
-    then
-        echo "Anaconda3 not found. Installing ..."
-        FILEPATH=""${script_dir}"/dependencies/Anaconda3-2023.09-0-Linux-x86_64.sh"
-        RAW_URL="https://repo.anaconda.com/archive/Anaconda3-2023.09-0-Linux-x86_64.sh"
-        curl --create-dirs -o $FILEPATH -L $RAW_URL
-        bash "${script_dir}"/dependencies/Anaconda3-2023.09-0-Linux-x86_64.sh -b -p $HOME/anaconda3
-        eval "$($HOME/anaconda3/bin/conda shell.bash hook)"
-        conda init
-    else
-        echo "Anaconda3 is already installed"
-    fi
-else
-    echo "Iinstall_anaconda3 is not set to yes, will not check for Anaconda3 python dependency."
+miniforge3_dir="$HOME/miniforge3"
+if [[ -d "${miniforge3_dir}" ]] ; then
+    echo "INFO miniforge3 is already installed"
+    exit 0
 fi
 
-"${script_dir}"/ensure_venv.sh
+repo_dir="${script_dir}"/repo/miniforge3
+
+if [[ -d "${repo_dir}" ]] ; then
+    echo "INFO Local copy of 'miniforge3' prerequisite found in '${repo_dir}' directory"
+else
+    echo "INFO Downloading 'miniforge3' prerequisite to '${repo_dir}' directory"
+    mkdir -p "${repo_dir}"
+    pushd "${repo_dir}"
+    wget "https://github.com/conda-forge/miniforge/releases/download/25.3.0-1/Miniforge3-25.3.0-1-Linux-x86_64.sh"
+    popd
+fi
+
+echo "INFO Installing miniconda3"
+
+pushd "${repo_dir}"
+bash ./Miniforge3-25.3.0-1-Linux-x86_64.sh -b
+popd
+
+echo INFO Installing conda-build
+eval "$($HOME/miniforge3/bin/conda shell.bash hook)"
+conda install -y conda-build
