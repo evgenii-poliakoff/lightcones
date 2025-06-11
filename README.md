@@ -11,7 +11,7 @@ git clone https://github.com/evgenii-poliakoff/lightcones.git
 cd lightcones
 ```
 
-Install the requirements:
+Install the requirements (only once on a give host):
 
 ```
 ./scripts/install_requirements.sh
@@ -20,21 +20,19 @@ Install the requirements:
 If the package was already built, then clean the project:
 
 ```
-./clean.sh
+./scripts/clean.sh
 ```
 
 Build the package:
 
 ```
-./build.sh
+./scripts/build.sh
 ```
-
-
 
 Install the package:
 
 ```
-./install.sh
+./scripts/install.sh
 ```
 
 Then cd to the notebooks subfolder and explore the jupyter notebooks:
@@ -47,54 +45,33 @@ cd notebooks
 
 #### When using lightcones package in your python programs
 
-The package is installed in the virtual python environment in the subfolder ./venv. Before using the package in your python programs you need to activate the virtual environment: 
+The package is installed in the virtual python environment in the subfolder ./conda-env. Before using the package in your python programs you need to activate the virtual environment: 
 
 ```
-source ./venv/bin/activate
+eval "$($HOME/miniforge3/bin/conda shell.bash hook)"
+conda activate ./conda-env
 ```
 
 #### When using lightcones package in VS Code jupyter notebooks
 
-When running jupyter notebooks from VS Code, the virtual environment is activated by clicking on "Select Kernel", "Select Another Kernel ...", "Python Environments ...", "venv (Python 3.XX.XX) venv/bin/python". 
+When running jupyter notebooks from VS Code, the virtual environment is activated by clicking on "Select Kernel", "Select Another Kernel ...", "Jupyter Kernel ...", "lightcones-env (Python 3.XX.XX) conda-env/bin/python3". 
 
 #### When using lightcones package in JupyterLab notebooks
 
-When running jupyter notebooks from JupyterLab web interface, the virtual environment is activated by clicking on "Python 3 (ipykernel)", "Select kernel", and choosing "lightcones_venv" in the dropdown list, then "Select".
+When running jupyter notebooks from JupyterLab web interface, the virtual environment is activated by clicking on "Python 3 (ipykernel)", "Select kernel", and choosing "lightcones-env" in the dropdown list, then "Select".
 
-## Supported Options
-
-### Fortran Compiler
-
-If you have no fortran installed, you can install GNU Fortran:
-
-```
-sudo apt update
-sudo apt install gfortran -y
-```
-
-
-### Python distribution
-
-If your have some problems with your python distribution, you can install locally (without root access) Anaconda3 python distribution which contains everything needed for scientific computing out-of-box. For this purpose, set the install_anaconda  option to "yes" in setup.cfg file:
-
-```
-[user_options]
-install_anaconda=yes
-```
-
-Then run
-
-```
-./scripts/install_requirements.sh
-```
-
-again. The necessary dependencies will be automatically downloaded. Then clean (if already built) and build the package
-
-```
-./build.sh
-```
 
 ## Working with jupyter notebooks
+
+### Install jupyter lab
+
+In order to install jupyter lab into the virtual environment of the package, execute the following commands:
+
+```
+eval "$($HOME/miniforge3/bin/conda shell.bash hook)"
+conda activate ./conda-env
+conda install jupyterlab
+```
 
 (run_jupyter_cmd)=
 ### Run jupyter notebook on the server as a command
@@ -102,6 +79,8 @@ again. The necessary dependencies will be automatically downloaded. Then clean (
 Now you are ready to start the notebooks on the server side. Go to the directory where you have downloaded the notebooks (incliding this one, which you are currently viewing), and run:
 
 ```
+eval "$($HOME/miniforge3/bin/conda shell.bash hook)"
+conda activate ./conda-env
 jupyter lab --no-browser --port 8889
 ```
     
@@ -120,6 +99,8 @@ to login to your notebook though your web browser on a local computer.
 If you want your notebook to run in background on the server even if you logout (e.g. to perform some lenghty Monte Carlo computation), then start the notebook with the command (on the SERVER):
 
 ```
+eval "$($HOME/miniforge3/bin/conda shell.bash hook)"
+conda activate ./conda-env
 jupyter lab --no-browser --port 8889 & disown
 ```
     
@@ -171,4 +152,3 @@ localhost:8887
 ```
 
 then enter the token (see {ref}`run_jupyter_cmd`).
-
