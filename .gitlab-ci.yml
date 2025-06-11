@@ -8,10 +8,11 @@ setup:
   script:
     - echo "Enter setup stage..."
     - ./scripts/install_requirements.sh
+    - ./scripts/ensure_conda_env.sh
   artifacts:
     untracked: true
     paths:
-      - ./venv/
+      - ./conda-env/
   tags:
     - ar
     #- alba
@@ -20,15 +21,12 @@ build:
   stage: build
   script: 
     - echo "Enter build state..."
-    - source ~/.bashrc
-    - source ./venv/bin/activate
-    - ./build.sh
-    - ./install.sh
+    - ./scripts/build.sh
+    - ./scripts/install.sh
   artifacts:
     untracked: true
     paths:
-      - ./venv/
-      - '**/*.so'
+      - ./conda-env/
   tags:
     - ar
     #- alba
@@ -37,10 +35,7 @@ test:
   stage: test
   script:
     - echo "Enter test stage..."
-    - source ~/.bashrc
-    - source ./venv/bin/activate
-    - ./run_tests.sh
-    #- python3 -m pytest ./tests
+    - ./scripts/run_tests.sh
   artifacts:
     when: always
     untracked: true

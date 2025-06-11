@@ -7,12 +7,11 @@
 set -euo pipefail
 
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
-venv_dir="${script_dir}"/venv
-
-source ~/.bashrc
-./scripts/ensure_venv.sh
-source "${venv_dir}"/bin/activate
+conda_env_dir="${script_dir}"/../conda-env
 
 echo INFO Running lightcone tests
 
-python3 -m pytest -n 8 "${script_dir}"/tests "$@"
+eval "$($HOME/miniforge3/bin/conda shell.bash hook)"
+conda activate "${conda_env_dir}"
+
+python3 -m pytest -n 8 "${script_dir}"/../tests "$@"

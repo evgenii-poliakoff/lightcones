@@ -6,8 +6,7 @@ script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 
 echo INFO Cleaning up build artifacts in the repository
 
-rm -rf "${script_dir}"/build
-rm -rf "${script_dir}"/lightcones.egg-info
-rm -rf "${script_dir}"/wheels
-rm -rf "${script_dir}"/venv
-find ./lightcones -name "*.so" -delete
+rm -rf "${script_dir}"/../conda-env
+
+eval "$($HOME/miniforge3/bin/conda shell.bash hook)"
+conda clean -f --packages

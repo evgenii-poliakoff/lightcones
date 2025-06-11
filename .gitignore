@@ -1,6 +1,4 @@
-*.so
 __pycache__
-*.egg-info/
 .ipynb_checkpoints/
 notebooks/**/*.npz
 notebooks/**/*.txt
@@ -11,9 +9,7 @@ notebooks/**/*.jpg
 notebooks/**/*.gif
 !notebooks/pictures/*.gif
 !notebooks/wigner_function/pictures/*.eps
-scripts/dependencies/*
-build/*
-venv/*
-wheels/*
+scripts/repo/*
+conda-env/
 tests/test_artifacts/*
 .virtual_documents/*
